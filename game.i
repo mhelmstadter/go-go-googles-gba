@@ -970,6 +970,7 @@ void fireEnemy();
 
 extern int score;
 extern int stuck;
+extern int cheater;
 # 4 "game.c" 2
 # 1 "sound.h" 1
 SOUND soundA;
@@ -998,6 +999,7 @@ int vOff;
 
 int score;
 int stuck;
+int cheater;
 
 
 
@@ -1011,14 +1013,14 @@ GOOG goog;
 FLOWER flowers[6];
 
 
-BUTTERFLY butterflies[3];
+BUTTERFLY butterflies[6];
 
 void initGame() {
  vOff = 0;
  hOff = 0;
-
  score = 0;
  stuck = 0;
+ cheater = 0;
  initPlayer();
  initEnemies();
  initFlowers();
@@ -1033,51 +1035,37 @@ void initPlayer() {
  goog.rdel = 0;
  goog.cdel = 1;
  goog.isJumping = 0;
-
-
 }
 
 void initEnemies() {
-
-
-
-
-
- int r = 0;
-
- int c = 0;
-
- int s = 1;
-
- int a = 1;
- for (int i = 0; i < 3; i++) {
-  butterflies[i].row = r;
-  butterflies[i].width = 16;
-
-  if (butterflies[i].side) {
-   butterflies[i].col = butterflies[i].width;
-  } else {
-   butterflies[i].col = (240 - butterflies[i].width);
-  }
-  butterflies[i].active = a;
-  butterflies[i].height = 16;
-  butterflies[i].rdel = 0.5;
-  butterflies[i].cdel = 1;
-  butterflies[i].stuck = 0;
-  butterflies[i].side = s;
-  butterflies[i].aniState = 0;
-  butterflies[i].aniCounter = 0;
-  butterflies[i].numFrames = 3;
-  butterflies[i].currFrame = 0;
-
-  r += 20;
-
-  c += 10;
-
-  s = !s;
-
-  a = !a;
+ for (int i = 0; i < 6; i++) {
+  butterflies[i].active = 0;
  }
+}
+
+void initEnemy(BUTTERFLY* b) {
+ b->row = rand() % 150 + 10;
+ b->width = 16;
+ b->active = 0;
+ b->height = 16;
+ b->rdel = 0.5;
+ b->cdel = 1;
+ b->stuck = 0;
+ if (goog.col % 2 == 0) {
+  b->side = 0;
+ } else {
+  b->side = 1;
+ }
+
+ if (b->side) {
+  b->col = b->width;
+ } else {
+  b->col = (240 - b->width);
+ }
+ b->aniState = 0;
+ b->aniCounter = 0;
+ b->numFrames = 3;
+ b->currFrame = 0;
 }
 
 void initFlowers() {
@@ -1098,13 +1086,11 @@ void initFlowers() {
 
 void drawGame() {
  drawPlayer();
- waitForVBlank();
-
  for (int i = 0; i < 6; i++) {
   FLOWER *f = &flowers[i];
   drawFlower(f, i+1);
  }
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {
   drawEnemy(&butterflies[i], i+6 +1);
     }
  DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128);
@@ -1144,13 +1130,13 @@ void updateGame() {
  for (int i = 0; i < 6; i++) {
   updateFlower(&flowers[i]);
  }
- for (int i = 0; i < 3; i++) {
+ for (int i = 0; i < 6; i++) {
   if (butterflies[i].row %2 == 0) {
    s = 1;
   }
   updateEnemy(&butterflies[i], s);
  }
- if (goog.timer >= 100) {
+ if (goog.timer >= 250) {
   fireEnemy();
   goog.timer = 0;
  }
@@ -1180,21 +1166,17 @@ void updatePlayer() {
   }
  } else {
   if((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
-   goog.rdel = -2500;
+   goog.rdel = -2550;
    goog.isJumping = 1;
   }
  }
-
-
-
  goog.timer++;
-
 }
 
 
 void updateEnemy(BUTTERFLY* b, int s) {
 
- int r = rand() % 150 + 10;
+ int r = rand() % 140 + 10;
  if (b->active) {
   if (b->side && b->col + b->width + b->cdel >= 240) {
    b->col = b->width;
@@ -1203,30 +1185,13 @@ void updateEnemy(BUTTERFLY* b, int s) {
    b->col = 240 - b->width;
   }
  }
- if (!(b->active)) {
-  b->row = r;
-  b->width = 16;
-
-  if (b->side) {
-   b->col = b->width;
-  } else {
-   b->col = (240 - b->width);
-  }
-  b->active = 1;
-  b->height = 16;
-  b->rdel = 0.5;
-  b->cdel = 1;
-  b->stuck = 0;
-  b->side = s;
-  b->aniState = 0;
-  b->aniCounter = 0;
-  b->numFrames = 3;
-  b->currFrame = 0;
- }
- if (b->col == 240/2 && (b->stuck == 0)) {
+ if (!cheater) {
+  if (b->col == 240/2 && (b->stuck == 0)) {
   b->stuck = 1;
   stuck++;
+  }
  }
+
  if (b->active && !(b->stuck)) {
 
   if (collision(((goog.row) >> 8), goog.col, goog.height, goog.width, b->row, b->col, b->height, b->width)) {
@@ -1256,7 +1221,7 @@ void updateFlower(FLOWER* f) {
  if (!(f->active)) {
   f->active = 1;
   f->row = rand() % 150 + 10;
-  f->col = rand() % 150 + 10;
+  f->col = rand() % 230 + 10;
  } else {
 
   if (collision(((goog.row) >> 8), goog.col, goog.height, goog.width, f->row, f->col, f->height, f->width)) {
@@ -1268,8 +1233,9 @@ void updateFlower(FLOWER* f) {
 }
 
 void fireEnemy() {
- for (int i = 0; i < 3; i++) {
+ for (int i = 0; i < 6; i++) {
   if (!butterflies[i].active) {
+   initEnemy(&butterflies[i]);
    butterflies[i].active = 1;
    break;
   }

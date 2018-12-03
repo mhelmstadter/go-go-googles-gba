@@ -11,6 +11,7 @@ int vOff;
 // Gameplay
 int score;
 int stuck;
+int cheater;
 // Jumping
 
 
@@ -29,9 +30,9 @@ BUTTERFLY butterflies[ENEMYCOUNT];
 void initGame() {
 	vOff = 0;
 	hOff = 0;
-	//DMANow(3, flowerPal, PALETTE, 256);
 	score = 0;
 	stuck = 0;
+	cheater = 0;
 	initPlayer();
 	initEnemies();
 	initFlowers();
@@ -46,51 +47,37 @@ void initPlayer() {
 	goog.rdel = 0;
 	goog.cdel = 1;
 	goog.isJumping = 0;
-	//goog.row = SHIFTUP(SCREENHEIGHT/2-goog.width/2);
-
 }
 
 void initEnemies() {
-	//butterflies should be initialized as not active
-	//change their levels so that they don't all appear on the same line
-	// start from either left or right depending on "side" field in struct
-	// // state variable will eventually be used to determine if butterfly is active, stuck on the tree, or has collided with player. just using active for now.
-	// r: initial row
-	int r = 0;
-	// c: initial column
-	int c = 0;
-	// s: initial side (1 is left, 0 is right)
-	int s = 1;
-	// a: active
-	int a = 1;
 	for (int i = 0; i < ENEMYCOUNT; i++) {
-		butterflies[i].row = r;
-		butterflies[i].width = 16;
-		// Left to Right
-		if (butterflies[i].side) {
-			butterflies[i].col = butterflies[i].width;
-		} else { // Right to Left
-			butterflies[i].col = (SCREENWIDTH - butterflies[i].width);
-		}
-		butterflies[i].active = a;
-		butterflies[i].height = 16;
-		butterflies[i].rdel = 0.5;
-		butterflies[i].cdel = 1;
-		butterflies[i].stuck = 0;
-		butterflies[i].side = s;
-		butterflies[i].aniState = 0;
-		butterflies[i].aniCounter = 0;
-		butterflies[i].numFrames = 3;
-		butterflies[i].currFrame = 0;
-		// r: spaces out butterflies 20 spaces vertically
-		r += 20;
-		// c: spaces out butterflies 10 spaces horizontally
-		c += 10;
-		// s: alternates side that butterfly is initialized on
-		s = !s;
-		// a: alternades whether the butterfly is initialized as active
-		a = !a;
+		butterflies[i].active = 0;
 	}
+}
+
+void initEnemy(BUTTERFLY* b) {
+	b->row = rand() % 150 + 10;
+	b->width = 16;
+	b->active = 0;
+	b->height = 16;
+	b->rdel = 0.5;
+	b->cdel = 1;
+	b->stuck = 0;
+	if (goog.col % 2 == 0) {
+		b->side = 0;
+	} else {
+		b->side = 1;
+	}
+	// Left to Right
+	if (b->side) {
+		b->col = b->width;
+	} else { // Right to Left
+		b->col = (SCREENWIDTH - b->width);
+	}
+	b->aniState = 0;
+	b->aniCounter = 0;
+	b->numFrames = 3;
+	b->currFrame = 0;
 }
 
 void initFlowers() {
@@ -110,9 +97,7 @@ void initFlowers() {
 }
 
 void drawGame() {
-	drawPlayer();
-	waitForVBlank();
-	
+	drawPlayer();	
 	for (int i = 0; i < FLOWERCOUNT; i++) {
 		FLOWER *f = &flowers[i];
 		drawFlower(f, i+1);
@@ -163,7 +148,7 @@ void updateGame() {
 		}
 		updateEnemy(&butterflies[i], s);
 	}
-	if (goog.timer >= 100) {
+	if (goog.timer >= 250) {
 		fireEnemy();
 		goog.timer = 0;
 	}
@@ -197,17 +182,13 @@ void updatePlayer() {
 			goog.isJumping = 1;
 		}
 	}
-
-	
-
 	goog.timer++;
-
 }
 
 // On update, the butterflies should "fly" in from either the left or right side, unless they have reached the center of the screen.
 void updateEnemy(BUTTERFLY* b, int s) {
 	// s is the side that the butterfly should come in on
-	int r = rand() % 150 + 10;
+	int r = rand() % 140 + 10;
 	if (b->active) {
 		if (b->side && b->col + b->width + b->cdel >= SCREENWIDTH) {
 			b->col = b->width;
@@ -216,30 +197,13 @@ void updateEnemy(BUTTERFLY* b, int s) {
 			b->col = SCREENWIDTH - b->width;
 		}
 	}
-	if (!(b->active)) {
-		b->row = r;
-		b->width = 16;
-		// Left to Right
-		if (b->side) {
-			b->col = b->width;
-		} else { // Right to Left
-			b->col = (SCREENWIDTH - b->width);
-		}
-		b->active = 1;
-		b->height = 16;
-		b->rdel = 0.5;
-		b->cdel = 1;
-		b->stuck = 0;
-		b->side = s;
-		b->aniState = 0;
-		b->aniCounter = 0;
-		b->numFrames = 3;
-		b->currFrame = 0;
-	}
-	if (b->col == SCREENWIDTH/2 && (b->stuck == 0)) {
+	if (!cheater) {
+		if (b->col == SCREENWIDTH/2 && (b->stuck == 0)) {
 		b->stuck = 1;
 		stuck++;
+		}
 	}
+	
 	if (b->active && !(b->stuck)) {
 		// If it collides with the player...
 		if (collision(SHIFTDOWN(goog.row), goog.col, goog.height, goog.width, b->row, b->col, b->height, b->width)) {
@@ -269,7 +233,7 @@ void updateFlower(FLOWER* f) {
 	if (!(f->active)) {
 		f->active = 1;
 		f->row = rand() % 150 + 10;
-		f->col = rand() % 150 + 10; 
+		f->col = rand() % 230 + 10; 
 	} else {
 	// If it collides with the player...
 		if (collision(SHIFTDOWN(goog.row), goog.col, goog.height, goog.width, f->row, f->col, f->height, f->width)) {
@@ -283,6 +247,7 @@ void updateFlower(FLOWER* f) {
 void fireEnemy() {
 	for (int i = 0; i < ENEMYCOUNT; i++) {
 		if (!butterflies[i].active) {
+			initEnemy(&butterflies[i]);
 			butterflies[i].active = 1;
 			break;
 		}

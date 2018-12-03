@@ -11,6 +11,82 @@
 	.file	"game.c"
 	.text
 	.align	2
+	.global	initGame
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	initGame, %function
+initGame:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, r5, r6, r7, r8, lr}
+	mov	r3, #0
+	mov	r6, #1
+	mov	r5, #16
+	mov	r8, #36864
+	mov	r7, #80
+	mov	r2, #50
+	mov	r1, #60
+	mov	ip, #12
+	mov	r0, #2
+	ldr	lr, .L6
+	str	r8, [lr]
+	str	r3, [lr, #28]
+	str	r6, [lr, #12]
+	str	r5, [lr, #16]
+	str	r5, [lr, #20]
+	str	r3, [lr, #8]
+	str	r7, [lr, #4]
+	ldr	lr, .L6+4
+	ldr	r5, .L6+8
+	str	r3, [lr]
+	ldr	lr, .L6+12
+	str	r3, [r5]
+	str	r3, [lr]
+	mov	r4, r6
+	ldr	lr, .L6+16
+	ldr	r6, .L6+20
+	ldr	r5, .L6+24
+	str	r3, [lr, #28]
+	str	r3, [lr, #88]
+	str	r3, [lr, #148]
+	str	r3, [lr, #208]
+	str	r3, [lr, #268]
+	str	r3, [lr, #328]
+	str	r3, [r6]
+	str	r3, [r5]
+	ldr	lr, .L6+28
+	ldr	r3, .L6+32
+.L2:
+	str	r2, [r3, #4]
+	add	r2, r2, #50
+	cmp	r2, lr
+	str	r1, [r3]
+	str	r4, [r3, #28]
+	str	ip, [r3, #16]
+	str	ip, [r3, #20]
+	str	r0, [r3, #8]
+	str	r0, [r3, #12]
+	add	r1, r1, #15
+	add	r3, r3, #32
+	bne	.L2
+	pop	{r4, r5, r6, r7, r8, lr}
+	bx	lr
+.L7:
+	.align	2
+.L6:
+	.word	goog
+	.word	hOff
+	.word	score
+	.word	stuck
+	.word	butterflies
+	.word	vOff
+	.word	cheater
+	.word	350
+	.word	flowers
+	.size	initGame, .-initGame
+	.align	2
 	.global	initPlayer
 	.syntax unified
 	.arm
@@ -26,7 +102,7 @@ initPlayer:
 	mov	r2, #0
 	mov	ip, #80
 	mov	r0, #1
-	ldr	r3, .L4
+	ldr	r3, .L10
 	str	lr, [r3]
 	str	ip, [r3, #4]
 	str	r0, [r3, #12]
@@ -36,9 +112,9 @@ initPlayer:
 	str	r2, [r3, #28]
 	ldr	lr, [sp], #4
 	bx	lr
-.L5:
+.L11:
 	.align	2
-.L4:
+.L10:
 	.word	goog
 	.size	initPlayer, .-initPlayer
 	.align	2
@@ -51,109 +127,77 @@ initEnemies:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r0, #1
-	mov	r1, #0
-	push	{r4, r5, r6, lr}
-	mov	r2, r1
-	mov	r6, r0
-	mov	ip, #16
-	mov	r5, #224
-	mov	r4, #3
-	ldr	r3, .L12
-.L9:
-	ldr	lr, [r3, #32]
-	cmp	lr, #0
-	moveq	lr, r5
-	movne	lr, ip
-	str	r1, [r3]
-	add	r1, r1, #20
-	cmp	r1, #60
-	str	r0, [r3, #28]
-	str	r0, [r3, #32]
-	str	ip, [r3, #16]
-	str	ip, [r3, #20]
-	str	r2, [r3, #8]
-	str	r6, [r3, #12]
-	str	r2, [r3, #40]
-	str	r2, [r3, #44]
-	str	r2, [r3, #48]
-	str	r4, [r3, #52]
-	str	r2, [r3, #56]
-	str	lr, [r3, #4]
-	eor	r0, r0, #1
-	add	r3, r3, #60
-	bne	.L9
-	pop	{r4, r5, r6, lr}
+	@ link register save eliminated.
+	mov	r2, #0
+	ldr	r3, .L13
+	str	r2, [r3, #28]
+	str	r2, [r3, #88]
+	str	r2, [r3, #148]
+	str	r2, [r3, #208]
+	str	r2, [r3, #268]
+	str	r2, [r3, #328]
 	bx	lr
-.L13:
+.L14:
 	.align	2
-.L12:
+.L13:
 	.word	butterflies
 	.size	initEnemies, .-initEnemies
 	.align	2
-	.global	initGame
+	.global	initEnemy
 	.syntax unified
 	.arm
 	.fpu softvfp
-	.type	initGame, %function
-initGame:
+	.type	initEnemy, %function
+initEnemy:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #0
-	push	{r4, lr}
-	mov	r1, #16
-	mov	ip, #36864
-	mov	r0, #80
-	mov	r4, #1
-	ldr	r3, .L18
-	ldr	lr, .L18+4
-	str	r2, [r3]
-	ldr	r3, .L18+8
-	str	r2, [lr]
-	str	r2, [r3]
-	ldr	lr, .L18+12
-	ldr	r3, .L18+16
-	str	r2, [lr]
-	str	r2, [r3, #8]
-	str	r2, [r3, #28]
-	str	ip, [r3]
-	str	r0, [r3, #4]
-	str	r1, [r3, #16]
-	str	r1, [r3, #20]
-	str	r4, [r3, #12]
-	bl	initEnemies
-	mov	lr, r4
-	mov	r1, #50
-	mov	r2, #60
-	mov	ip, #12
-	mov	r0, #2
-	ldr	r3, .L18+20
-.L15:
-	str	r2, [r3]
-	add	r2, r2, #15
-	cmp	r2, #150
-	str	r1, [r3, #4]
-	str	lr, [r3, #28]
-	str	ip, [r3, #16]
-	str	ip, [r3, #20]
-	str	r0, [r3, #8]
-	str	r0, [r3, #12]
-	add	r1, r1, #50
-	add	r3, r3, #32
-	bne	.L15
-	pop	{r4, lr}
+	push	{r4, r6, r7, lr}
+	ldr	r3, .L19
+	mov	r4, r0
+	mov	lr, pc
+	bx	r3
+	mov	lr, #1
+	ldr	r3, .L19+4
+	smull	r6, r7, r0, r3
+	asr	r3, r0, #31
+	rsb	r3, r3, r7, asr #4
+	ldr	r2, .L19+8
+	add	r3, r3, r3, lsl #2
+	ldr	r2, [r2, #4]
+	rsb	r3, r3, r3, lsl #4
+	sub	r3, r0, r3, lsl lr
+	ands	r2, r2, lr
+	add	r3, r3, #10
+	str	r3, [r4]
+	moveq	r3, #224
+	mov	ip, #16
+	mov	r1, #0
+	streq	r2, [r4, #32]
+	streq	r3, [r4, #4]
+	mov	r2, #3
+	mov	r3, #0
+	str	ip, [r4, #16]
+	str	ip, [r4, #20]
+	str	r1, [r4, #28]
+	str	r1, [r4, #8]
+	str	r1, [r4, #40]
+	str	lr, [r4, #12]
+	strne	lr, [r4, #32]
+	strne	ip, [r4, #4]
+	str	r3, [r4, #44]
+	str	r3, [r4, #48]
+	str	r3, [r4, #56]
+	str	r2, [r4, #52]
+	pop	{r4, r6, r7, lr}
 	bx	lr
-.L19:
+.L20:
 	.align	2
-.L18:
-	.word	vOff
-	.word	hOff
-	.word	score
-	.word	stuck
+.L19:
+	.word	rand
+	.word	458129845
 	.word	goog
-	.word	flowers
-	.size	initGame, .-initGame
+	.size	initEnemy, .-initEnemy
 	.align	2
 	.global	initFlowers
 	.syntax unified
@@ -170,9 +214,9 @@ initFlowers:
 	mov	r4, #1
 	mov	ip, #12
 	mov	r0, #2
-	ldr	r3, .L24
-	ldr	lr, .L24+4
-.L21:
+	ldr	r3, .L25
+	ldr	lr, .L25+4
+.L22:
 	str	r2, [r3, #4]
 	add	r2, r2, #50
 	cmp	r2, lr
@@ -184,12 +228,12 @@ initFlowers:
 	str	r0, [r3, #12]
 	add	r1, r1, #15
 	add	r3, r3, #32
-	bne	.L21
+	bne	.L22
 	pop	{r4, lr}
 	bx	lr
-.L25:
+.L26:
 	.align	2
-.L24:
+.L25:
 	.word	flowers
 	.word	350
 	.size	initFlowers, .-initFlowers
@@ -203,92 +247,93 @@ drawGame:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r0, #0
-	ldr	r3, .L37
-	ldm	r3, {r2, r3}
 	push	{r4, r5, r6, lr}
-	ldr	r4, .L37+4
-	asr	r2, r2, #8
-	orr	r3, r3, #16384
-	ldr	r1, .L37+8
-	strh	r2, [r4]	@ movhi
-	strh	r3, [r4, #2]	@ movhi
-	strh	r0, [r4, #4]	@ movhi
-	mov	lr, pc
-	bx	r1
-	mov	r5, #64
-	mov	r1, r4
+	ldr	r0, .L38
+	mov	r5, #0
+	mov	r2, r0
+	mov	r1, r0
 	mov	lr, #512
-	mov	r2, r4
-	ldr	r3, .L37+12
+	mov	r4, #64
+	ldr	r3, .L38+4
+	ldr	ip, [r3]
+	ldr	r3, [r3, #4]
+	orr	r3, r3, #16384
+	strh	r3, [r0, #2]	@ movhi
+	ldr	r3, .L38+8
+	asr	ip, ip, #8
+	strh	r5, [r0, #4]	@ movhi
+	strh	ip, [r0]	@ movhi
 	add	ip, r3, #192
-.L29:
+.L30:
 	ldr	r0, [r3, #28]
 	cmp	r0, #0
 	ldrne	r0, [r3, #4]
-	ldrne	r4, [r3]
+	ldrne	r5, [r3]
 	orrne	r0, r0, #16384
 	add	r3, r3, #32
-	strhne	r5, [r2, #12]	@ movhi
-	strhne	r0, [r2, #10]	@ movhi
-	strhne	r4, [r2, #8]	@ movhi
-	strheq	lr, [r2, #8]	@ movhi
-	cmp	r3, ip
-	add	r2, r2, #8
-	bne	.L29
-	mov	lr, #512
-	ldr	r3, .L37+16
-	ldr	r4, .L37+20
-	add	ip, r3, #180
-.L32:
-	ldr	r2, [r3, #28]
-	cmp	r2, #0
-	strheq	lr, [r1, #56]	@ movhi
-	bne	.L36
-.L31:
-	add	r3, r3, #60
+	strhne	r4, [r1, #12]	@ movhi
+	strhne	r0, [r1, #10]	@ movhi
+	strhne	r5, [r1, #8]	@ movhi
+	strheq	lr, [r1, #8]	@ movhi
 	cmp	r3, ip
 	add	r1, r1, #8
-	bne	.L32
+	bne	.L30
+	ldr	r3, .L38+12
+	mov	lr, #512
+	ldr	r4, .L38+16
+	add	ip, r3, #360
+	b	.L33
+.L32:
+	add	r3, r3, #60
+	cmp	r3, ip
+	add	r2, r2, #8
+	beq	.L37
+.L33:
+	ldr	r1, [r3, #28]
+	cmp	r1, #0
+	strheq	lr, [r2, #56]	@ movhi
+	beq	.L32
+	ldr	r1, [r3, #16]
+	add	r0, r1, #7
+	cmp	r1, #0
+	movlt	r1, r0
+	ldr	r0, [r3, #56]
+	asr	r5, r1, #3
+	mul	r1, r0, r5
+	ldr	r0, [r3, #4]
+	ldrb	r5, [r3]	@ zero_extendqisi2
+	and	r0, r0, r4
+	add	r3, r3, #60
+	add	r1, r1, #128
+	orr	r0, r0, #16384
+	cmp	r3, ip
+	strh	r1, [r2, #60]	@ movhi
+	strh	r0, [r2, #58]	@ movhi
+	strh	r5, [r2, #56]	@ movhi
+	add	r2, r2, #8
+	bne	.L33
+.L37:
 	mov	r3, #128
 	mov	r2, #117440512
-	ldr	r1, .L37+4
-	ldr	r4, .L37+24
+	ldr	r1, .L38
+	ldr	r4, .L38+20
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #67108864
-	ldr	r2, .L37+28
+	ldr	r2, .L38+24
 	ldrh	r1, [r2]
-	ldr	r2, .L37+32
+	ldr	r2, .L38+28
 	ldrh	r2, [r2]
 	strh	r1, [r3, #16]	@ movhi
 	pop	{r4, r5, r6, lr}
 	strh	r2, [r3, #18]	@ movhi
 	bx	lr
-.L36:
-	ldr	r2, [r3, #16]
-	add	r0, r2, #7
-	cmp	r2, #0
-	movlt	r2, r0
-	ldr	r0, [r3, #56]
-	asr	r5, r2, #3
-	mul	r2, r0, r5
-	ldr	r0, [r3, #4]
-	ldrb	r5, [r3]	@ zero_extendqisi2
-	and	r0, r0, r4
-	add	r2, r2, #128
-	orr	r0, r0, #16384
-	strh	r2, [r1, #60]	@ movhi
-	strh	r0, [r1, #58]	@ movhi
-	strh	r5, [r1, #56]	@ movhi
-	b	.L31
-.L38:
+.L39:
 	.align	2
-.L37:
-	.word	goog
+.L38:
 	.word	shadowOAM
-	.word	waitForVBlank
+	.word	goog
 	.word	flowers
 	.word	butterflies
 	.word	511
@@ -308,18 +353,18 @@ drawPlayer:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r0, #0
-	ldr	r3, .L40
+	ldr	r3, .L41
 	ldm	r3, {r1, r2}
-	ldr	r3, .L40+4
+	ldr	r3, .L41+4
 	asr	r1, r1, #8
 	orr	r2, r2, #16384
 	strh	r1, [r3]	@ movhi
 	strh	r2, [r3, #2]	@ movhi
 	strh	r0, [r3, #4]	@ movhi
 	bx	lr
-.L41:
+.L42:
 	.align	2
-.L40:
+.L41:
 	.word	goog
 	.word	shadowOAM
 	.size	drawPlayer, .-drawPlayer
@@ -335,13 +380,13 @@ drawEnemy:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	ldr	r3, [r0, #28]
 	cmp	r3, #0
-	bne	.L49
+	bne	.L50
 	mov	r2, #512
-	ldr	r3, .L50
+	ldr	r3, .L51
 	lsl	r1, r1, #3
 	strh	r2, [r3, r1]	@ movhi
 	bx	lr
-.L49:
+.L50:
 	ldr	r3, [r0, #16]
 	add	r2, r3, #7
 	cmp	r3, #0
@@ -350,7 +395,7 @@ drawEnemy:
 	asr	r3, r3, #3
 	mul	r2, r3, ip
 	ldr	r3, [r0, #4]
-	ldr	ip, .L50
+	ldr	ip, .L51
 	lsl	r3, r3, #23
 	str	lr, [sp, #-4]!
 	lsl	r1, r1, #3
@@ -364,9 +409,9 @@ drawEnemy:
 	strh	r2, [r0, #4]	@ movhi
 	ldr	lr, [sp], #4
 	bx	lr
-.L51:
+.L52:
 	.align	2
-.L50:
+.L51:
 	.word	shadowOAM
 	.size	drawEnemy, .-drawEnemy
 	.align	2
@@ -381,17 +426,17 @@ drawFlower:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	ldr	r3, [r0, #28]
 	cmp	r3, #0
-	bne	.L59
+	bne	.L60
 	mov	r2, #512
-	ldr	r3, .L60
+	ldr	r3, .L61
 	lsl	r1, r1, #3
 	strh	r2, [r3, r1]	@ movhi
 	bx	lr
-.L59:
+.L60:
 	str	lr, [sp, #-4]!
 	mov	lr, #64
 	ldr	r3, [r0, #4]
-	ldr	ip, .L60
+	ldr	ip, .L61
 	ldr	r0, [r0]
 	lsl	r1, r1, #3
 	add	r2, ip, r1
@@ -401,9 +446,9 @@ drawFlower:
 	strh	r3, [r2, #2]	@ movhi
 	ldr	lr, [sp], #4
 	bx	lr
-.L61:
+.L62:
 	.align	2
-.L60:
+.L61:
 	.word	shadowOAM
 	.size	drawFlower, .-drawFlower
 	.align	2
@@ -417,21 +462,21 @@ updatePlayer:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r3, .L74
+	ldr	r3, .L75
 	ldrh	r3, [r3, #48]
 	tst	r3, #32
-	ldr	r3, .L74+4
-	bne	.L63
+	ldr	r3, .L75+4
+	bne	.L64
 	ldr	r2, [r3, #4]
 	ldr	r1, [r3, #12]
 	cmp	r2, r1
 	subge	r2, r2, r1
 	strge	r2, [r3, #4]
-.L63:
-	ldr	r2, .L74
+.L64:
+	ldr	r2, .L75
 	ldrh	r2, [r2, #48]
 	tst	r2, #16
-	bne	.L64
+	bne	.L65
 	add	r0, r3, #12
 	ldr	r1, [r3, #4]
 	ldm	r0, {r0, r2}
@@ -440,10 +485,10 @@ updatePlayer:
 	cmp	r2, ip
 	addle	r1, r1, r0
 	strle	r1, [r3, #4]
-.L64:
+.L65:
 	ldr	r2, [r3, #28]
 	cmp	r2, #0
-	beq	.L65
+	beq	.L66
 	ldr	r2, [r3, #8]
 	ldr	r1, [r3]
 	add	r0, r2, #100
@@ -456,32 +501,32 @@ updatePlayer:
 	movgt	r2, #0
 	str	r0, [r3, #8]
 	strgt	r2, [r3, #28]
-.L67:
+.L68:
 	ldr	r2, [r3, #32]
 	add	r2, r2, #1
 	str	r2, [r3, #32]
 	bx	lr
-.L65:
-	ldr	r2, .L74+8
+.L66:
+	ldr	r2, .L75+8
 	ldrh	r2, [r2]
 	tst	r2, #64
-	beq	.L67
-	ldr	r2, .L74+12
+	beq	.L68
+	ldr	r2, .L75+12
 	ldrh	r2, [r2]
 	tst	r2, #64
 	moveq	r1, #1
-	ldreq	r2, .L74+16
+	ldreq	r2, .L75+16
 	streq	r1, [r3, #28]
 	streq	r2, [r3, #8]
-	b	.L67
-.L75:
+	b	.L68
+.L76:
 	.align	2
-.L74:
+.L75:
 	.word	67109120
 	.word	goog
 	.word	oldButtons
 	.word	buttons
-	.word	-2500
+	.word	-2550
 	.size	updatePlayer, .-updatePlayer
 	.align	2
 	.global	updateEnemy
@@ -493,36 +538,40 @@ updateEnemy:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, lr}
+	push	{r4, r5, r6, lr}
 	mov	r4, r0
-	ldr	r3, .L104
-	sub	sp, sp, #20
-	mov	r5, r1
+	ldr	r3, .L100
+	sub	sp, sp, #16
 	mov	lr, pc
 	bx	r3
 	ldr	r3, [r4, #28]
 	cmp	r3, #0
-	beq	.L77
-	ldr	r3, [r4, #32]
-	cmp	r3, #0
-	ldr	ip, [r4, #4]
-	ldr	r3, [r4, #12]
-	ldr	r1, [r4, #16]
 	beq	.L78
-	add	r2, ip, r1
-	add	r3, r2, r3
-	cmp	r3, #239
-	movgt	ip, r1
-	strgt	r1, [r4, #4]
-	cmp	ip, #120
-	ldrne	r3, [r4, #40]
-	beq	.L102
-.L93:
+	ldr	r3, [r4, #32]
+	add	r2, r4, #12
 	cmp	r3, #0
-	beq	.L94
+	ldm	r2, {r2, ip}
+	ldr	r3, [r4, #4]
+	beq	.L79
+	add	r3, ip, r3
+	add	r3, r3, r2
+	cmp	r3, #239
+	strgt	ip, [r4, #4]
+.L80:
+	ldr	r3, .L100+4
+	ldr	r3, [r3]
+	cmp	r3, #0
+	bne	.L82
+	ldr	r3, [r4, #4]
+	cmp	r3, #120
+	beq	.L90
+.L82:
+	ldr	r5, [r4, #40]
+	cmp	r5, #0
+	beq	.L99
 .L85:
 	ldr	r2, [r4, #48]
-	ldr	r3, .L104+4
+	ldr	r3, .L100+8
 	smull	r0, r1, r2, r3
 	asr	r3, r2, #31
 	rsb	r3, r3, r1, asr #3
@@ -539,103 +588,71 @@ updateEnemy:
 .L87:
 	add	r2, r2, #1
 	str	r2, [r4, #48]
-	add	sp, sp, #20
+	add	sp, sp, #16
 	@ sp needed
-	pop	{r4, r5, r6, r7, lr}
+	pop	{r4, r5, r6, lr}
 	bx	lr
-.L77:
-	mov	ip, #16
-	ldr	r3, .L104+8
-	smull	r6, r7, r0, r3
-	asr	r3, r0, #31
-	rsb	r3, r3, r7, asr #4
-	add	r3, r3, r3, lsl #2
-	ldr	r2, [r4, #32]
-	rsb	r3, r3, r3, lsl #4
-	sub	r3, r0, r3, lsl #1
-	add	r3, r3, #10
-	cmp	r2, #0
-	str	ip, [r4, #16]
-	mov	r2, #1
-	mov	r1, #3
-	str	r3, [r4]
-	moveq	ip, #224
-	mov	r3, #0
-	mov	r0, #16
-	str	r1, [r4, #52]
-	str	ip, [r4, #4]
-	str	r5, [r4, #32]
-	str	r2, [r4, #28]
-	str	r2, [r4, #12]
-	str	r0, [r4, #20]
-	str	r3, [r4, #8]
-	str	r3, [r4, #40]
-	str	r3, [r4, #44]
-	str	r3, [r4, #48]
-	str	r3, [r4, #56]
-	ldr	r1, [r4, #16]
-.L94:
-	ldr	r0, .L104+12
-	ldr	lr, [r4, #20]
-	ldr	r3, [r0, #16]
-	ldr	r2, [r0, #20]
-	str	r1, [sp, #12]
-	ldm	r0, {r0, r1}
-	str	ip, [sp, #4]
-	ldr	ip, [r4]
-	asr	r0, r0, #8
-	str	lr, [sp, #8]
-	str	ip, [sp]
-	ldr	r5, .L104+16
-	mov	lr, pc
-	bx	r5
-	cmp	r0, #0
-	movne	r3, #0
-	strne	r3, [r4, #28]
-	bne	.L85
-	ldr	r3, [r4, #32]
-	ldr	r2, [r4, #12]
-	cmp	r3, #0
-	ldr	r3, [r4, #4]
-	addne	r3, r3, r2
-	subeq	r3, r3, r2
-	str	r3, [r4, #4]
-	b	.L85
 .L78:
-	sub	r3, ip, r3
-	sub	r3, r3, r1
+	ldr	r3, .L100+4
+	ldr	r3, [r3]
 	cmp	r3, #0
+	bne	.L85
+	ldr	r3, [r4, #4]
+	cmp	r3, #120
+	bne	.L85
+.L90:
 	ldr	r3, [r4, #40]
-	ble	.L103
-.L80:
-	cmp	ip, #120
-	bne	.L93
-.L92:
 	cmp	r3, #0
 	bne	.L85
 	mov	r1, #1
-	ldr	r2, .L104+20
+	ldr	r2, .L100+12
 	ldr	r3, [r2]
 	add	r3, r3, r1
 	str	r3, [r2]
 	str	r1, [r4, #40]
 	b	.L85
-.L103:
-	rsb	ip, r1, #240
-	str	ip, [r4, #4]
+.L79:
+	sub	r3, r3, r2
+	sub	r3, r3, ip
+	cmp	r3, #0
+	rsble	r3, ip, #240
+	strle	r3, [r4, #4]
 	b	.L80
-.L102:
-	ldr	r3, [r4, #40]
-	b	.L92
-.L105:
+.L99:
+	ldr	r0, .L100+16
+	ldr	r6, [r4, #20]
+	ldr	r3, [r0, #16]
+	ldr	r2, [r0, #20]
+	ldm	r0, {r0, r1}
+	str	ip, [sp, #12]
+	ldr	lr, [r4, #4]
+	str	r6, [sp, #8]
+	ldr	ip, [r4]
+	asr	r0, r0, #8
+	stm	sp, {ip, lr}
+	ldr	r6, .L100+20
+	mov	lr, pc
+	bx	r6
+	cmp	r0, #0
+	strne	r5, [r4, #28]
+	bne	.L85
+	ldr	r3, [r4, #32]
+	ldr	r2, [r4, #12]
+	cmp	r3, #0
+	ldr	r3, [r4, #4]
+	addne	r3, r2, r3
+	subeq	r3, r3, r2
+	str	r3, [r4, #4]
+	b	.L85
+.L101:
 	.align	2
-.L104:
+.L100:
 	.word	rand
+	.word	cheater
 	.word	1717986919
-	.word	458129845
+	.word	stuck
 	.word	goog
 	.word	collision
-	.word	stuck
 	.size	updateEnemy, .-updateEnemy
 	.align	2
 	.global	updateFlower
@@ -647,14 +664,14 @@ updateFlower:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, r9, lr}
+	push	{r4, r5, r6, r7, lr}
 	ldr	r3, [r0, #28]
 	cmp	r3, #0
 	sub	sp, sp, #20
 	mov	r4, r0
-	beq	.L113
+	beq	.L109
 	ldr	lr, [r4, #16]
-	ldr	r0, .L115
+	ldr	r0, .L111
 	ldr	ip, [r4, #20]
 	ldr	r3, [r0, #16]
 	ldr	r2, [r0, #20]
@@ -665,75 +682,116 @@ updateFlower:
 	ldr	ip, [r4]
 	asr	r0, r0, #8
 	stm	sp, {ip, lr}
-	ldr	r5, .L115+4
+	ldr	r5, .L111+4
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #0
-	bne	.L114
+	bne	.L110
 	add	sp, sp, #20
 	@ sp needed
-	pop	{r4, r5, r6, r7, r8, r9, lr}
+	pop	{r4, r5, r6, r7, lr}
 	bx	lr
-.L113:
+.L109:
 	mov	r3, #1
-	ldr	r6, .L115+8
+	ldr	r5, .L111+8
 	str	r3, [r0, #28]
 	mov	lr, pc
-	bx	r6
-	ldr	r5, .L115+12
-	smull	r8, r9, r0, r5
-	asr	r3, r0, #31
-	rsb	r3, r3, r9, asr #4
-	add	r3, r3, r3, lsl #2
-	rsb	r3, r3, r3, lsl #4
-	sub	r3, r0, r3, lsl #1
-	add	r3, r3, #10
-	str	r3, [r4]
-	mov	lr, pc
-	bx	r6
-	smull	r6, r7, r0, r5
+	bx	r5
+	ldr	r3, .L111+12
+	smull	r6, r7, r0, r3
 	asr	r3, r0, #31
 	rsb	r3, r3, r7, asr #4
 	add	r3, r3, r3, lsl #2
 	rsb	r3, r3, r3, lsl #4
 	sub	r3, r0, r3, lsl #1
 	add	r3, r3, #10
-	str	r3, [r4, #4]
+	str	r3, [r4]
+	mov	lr, pc
+	bx	r5
+	mov	r2, #230
+	ldr	r3, .L111+16
+	smull	r6, r7, r0, r3
+	asr	r3, r0, #31
+	rsb	r1, r3, r7, asr #6
+	mul	r3, r2, r1
+	sub	r0, r0, r3
+	add	r0, r0, #10
+	str	r0, [r4, #4]
 	add	sp, sp, #20
 	@ sp needed
-	pop	{r4, r5, r6, r7, r8, r9, lr}
+	pop	{r4, r5, r6, r7, lr}
 	bx	lr
-.L114:
+.L110:
 	mov	r3, #0
-	ldr	r2, .L115+16
-	ldr	r1, .L115+20
-	ldr	r0, .L115+24
-	ldr	r5, .L115+28
+	ldr	r2, .L111+20
+	ldr	r1, .L111+24
+	ldr	r0, .L111+28
+	ldr	r5, .L111+32
 	mov	lr, pc
 	bx	r5
 	mov	r1, #0
-	ldr	r2, .L115+32
+	ldr	r2, .L111+36
 	ldr	r3, [r2]
 	add	r3, r3, #5
 	str	r3, [r2]
 	str	r1, [r4, #28]
 	add	sp, sp, #20
 	@ sp needed
-	pop	{r4, r5, r6, r7, r8, r9, lr}
+	pop	{r4, r5, r6, r7, lr}
 	bx	lr
-.L116:
+.L112:
 	.align	2
-.L115:
+.L111:
 	.word	goog
 	.word	collision
 	.word	rand
 	.word	458129845
+	.word	1195121335
 	.word	11025
 	.word	10250
 	.word	Ding
 	.word	playSoundA
 	.word	score
 	.size	updateFlower, .-updateFlower
+	.align	2
+	.global	fireEnemy
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	fireEnemy, %function
+fireEnemy:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	ldr	r0, .L124
+	mov	r2, r0
+	ldr	r1, [r2, #28]
+	cmp	r1, #0
+	mov	r3, #0
+	beq	.L123
+.L114:
+	add	r3, r3, #1
+	cmp	r3, #6
+	add	r2, r2, #60
+	bxeq	lr
+	ldr	r1, [r2, #28]
+	cmp	r1, #0
+	bne	.L114
+.L123:
+	rsb	r3, r3, r3, lsl #4
+	push	{r4, lr}
+	add	r4, r0, r3, lsl #2
+	mov	r0, r4
+	bl	initEnemy
+	mov	r3, #1
+	str	r3, [r4, #28]
+	pop	{r4, lr}
+	bx	lr
+.L125:
+	.align	2
+.L124:
+	.word	butterflies
+	.size	fireEnemy, .-fireEnemy
 	.align	2
 	.global	updateGame
 	.syntax unified
@@ -747,21 +805,21 @@ updateGame:
 	push	{r4, r5, r6, lr}
 	mov	r4, #0
 	bl	updatePlayer
-	ldr	r0, .L129
+	ldr	r0, .L132
 	bl	updateFlower
-	ldr	r0, .L129+4
+	ldr	r0, .L132+4
 	bl	updateFlower
-	ldr	r0, .L129+8
+	ldr	r0, .L132+8
 	bl	updateFlower
-	ldr	r0, .L129+12
+	ldr	r0, .L132+12
 	bl	updateFlower
-	ldr	r0, .L129+16
+	ldr	r0, .L132+16
 	bl	updateFlower
-	ldr	r0, .L129+20
+	ldr	r0, .L132+20
 	mov	r5, r4
 	bl	updateFlower
-	ldr	r6, .L129+24
-.L119:
+	ldr	r6, .L132+24
+.L128:
 	ldr	r3, [r6, r4]
 	tst	r3, #1
 	moveq	r5, #1
@@ -769,39 +827,21 @@ updateGame:
 	mov	r1, r5
 	add	r4, r4, #60
 	bl	updateEnemy
-	cmp	r4, #180
-	bne	.L119
-	ldr	r3, .L129+28
-	ldr	r2, [r3, #32]
-	cmp	r2, #99
-	ble	.L117
-	ldr	r2, [r6, #28]
-	cmp	r2, #0
-	beq	.L121
-	ldr	r2, [r6, #88]
-	cmp	r2, #0
-	beq	.L123
-	ldr	r2, [r6, #148]
-	cmp	r2, #0
-	moveq	r2, #2
-	beq	.L121
-.L122:
-	mov	r2, #0
-	str	r2, [r3, #32]
-.L117:
+	cmp	r4, #360
+	bne	.L128
+	ldr	r4, .L132+28
+	ldr	r3, [r4, #32]
+	cmp	r3, #249
+	ble	.L126
+	bl	fireEnemy
+	mov	r3, #0
+	str	r3, [r4, #32]
+.L126:
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L123:
-	mov	r2, #1
-.L121:
-	mov	r1, #1
-	rsb	r2, r2, r2, lsl #4
-	add	r6, r6, r2, lsl #2
-	str	r1, [r6, #28]
-	b	.L122
-.L130:
+.L133:
 	.align	2
-.L129:
+.L132:
 	.word	flowers
 	.word	flowers+32
 	.word	flowers+64
@@ -811,46 +851,11 @@ updateGame:
 	.word	butterflies
 	.word	goog
 	.size	updateGame, .-updateGame
-	.align	2
-	.global	fireEnemy
-	.syntax unified
-	.arm
-	.fpu softvfp
-	.type	fireEnemy, %function
-fireEnemy:
-	@ Function supports interworking.
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	@ link register save eliminated.
-	ldr	r3, .L139
-	ldr	r2, [r3, #28]
-	cmp	r2, #0
-	beq	.L132
-	ldr	r2, [r3, #88]
-	cmp	r2, #0
-	beq	.L134
-	ldr	r2, [r3, #148]
-	cmp	r2, #0
-	moveq	r2, #2
-	bxne	lr
-.L132:
-	mov	r1, #1
-	rsb	r2, r2, r2, lsl #4
-	add	r3, r3, r2, lsl #2
-	str	r1, [r3, #28]
-	bx	lr
-.L134:
-	mov	r2, #1
-	b	.L132
-.L140:
-	.align	2
-.L139:
-	.word	butterflies
-	.size	fireEnemy, .-fireEnemy
-	.comm	butterflies,180,4
+	.comm	butterflies,360,4
 	.comm	flowers,192,4
 	.comm	goog,36,4
 	.comm	shadowOAM,1024,4
+	.comm	cheater,4,4
 	.comm	stuck,4,4
 	.comm	score,4,4
 	.comm	vOff,4,4

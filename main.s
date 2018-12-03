@@ -247,19 +247,16 @@ goToGame:
 	mov	lr, pc
 	bx	r4
 	ldr	r2, .L25+32
+	mov	r3, #1024
 	ldr	r1, .L25+36
 	mov	r0, #3
-	mov	r3, #1024
 	mov	lr, pc
 	bx	r4
 	ldr	r3, .L25+40
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L25+44
-	mov	lr, pc
-	bx	r3
 	mov	r2, #1
-	ldr	r3, .L25+48
+	ldr	r3, .L25+44
 	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
@@ -276,7 +273,6 @@ goToGame:
 	.word	100679680
 	.word	100722688
 	.word	BlankTreeBGMap
-	.word	initGame
 	.word	waitForVBlank
 	.word	state
 	.size	goToGame, .-goToGame
@@ -665,14 +661,18 @@ game:
 	bx	r4
 	pop	{r4, lr}
 	bx	lr
+.L90:
+	ldr	r2, .L91+36
+	ldr	r3, [r2]
+	rsbs	r3, r3, #1
+	movcc	r3, #0
+	str	r3, [r2]
+	b	.L79
 .L89:
 	bl	goToWin
 	b	.L78
-.L90:
-	bl	goToLose
-	b	.L79
 .L88:
-	ldr	r3, .L91+36
+	ldr	r3, .L91+40
 	mov	lr, pc
 	bx	r3
 	bl	goToPause
@@ -689,6 +689,7 @@ game:
 	.word	waitForVBlank
 	.word	DMANow
 	.word	shadowOAM
+	.word	cheater
 	.word	pauseSound
 	.size	game, .-game
 	.section	.text.startup,"ax",%progbits

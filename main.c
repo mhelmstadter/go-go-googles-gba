@@ -212,8 +212,6 @@ void goToGame() {
     // TODO 4.4 - load trees map to screenblock
     DMANow(3, BlankTreeBGMap, &SCREENBLOCK[29], BlankTreeBGMapLen/2);
 
-
-    initGame();
     waitForVBlank();
 
     state = GAME;
@@ -234,10 +232,10 @@ void game() {
     }
 
     if (BUTTON_PRESSED(BUTTON_B)) {
-        goToLose();
+        cheater = !cheater;
     }
 
-    if (stuck >= 10) {
+    if (stuck >= 6) {
         goToLose();
     }
 
@@ -277,11 +275,13 @@ void pause() {
     if (BUTTON_PRESSED(BUTTON_START)) {
         unpauseSound();
         goToGame();
+        //state = GAME;
     }
 
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
         playSoundA(JumpAround,JUMPAROUNDLEN,JUMPAROUNDFREQ, 1);
         goToStart();
+        //state = START;
     }
 
 }

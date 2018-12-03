@@ -62,13 +62,14 @@ void fireEnemy();
 
 // Gameplay Variables
 #define FLOWERCOUNT 6
-#define ENEMYCOUNT 5
+#define ENEMYCOUNT 6
 extern int score;
 extern int stuck;
+extern int cheater;
 
 // Jump Variables
 #define FANCY
 #define GRAVITY 100
-#define JUMPPOWER 2500
+#define JUMPPOWER 2550
 
 

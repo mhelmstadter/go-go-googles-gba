@@ -1306,6 +1306,7 @@ typedef struct {
     int height;
     int hide;
     int isJumping;
+    int timer;
 } GOOG;
 
 
@@ -1355,12 +1356,14 @@ void updatePlayer();
 void updateEnemy();
 void updateFlower();
 void updateButterfly();
+void fireEnemy();
 
 
 
 
 extern int score;
 extern int stuck;
+extern int cheater;
 # 5 "main.c" 2
 # 1 "sound.h" 1
 SOUND soundA;
@@ -1661,8 +1664,6 @@ void goToGame() {
 
     DMANow(3, BlankTreeBGMap, &((screenblock *)0x6000000)[29], 2048/2);
 
-
-    initGame();
     waitForVBlank();
 
     state = GAME;
@@ -1683,7 +1684,7 @@ void game() {
     }
 
     if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
-        goToLose();
+        cheater = !cheater;
     }
 
     if (stuck >= 6) {
@@ -1726,11 +1727,13 @@ void pause() {
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         unpauseSound();
         goToGame();
+
     }
 
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
         playSoundA(JumpAround,2371392,11025, 1);
         goToStart();
+
     }
 
 }
