@@ -914,6 +914,7 @@ typedef struct {
     int hide;
     int isJumping;
     int timer;
+    int aniState;
 } GOOG;
 
 
@@ -1017,6 +1018,8 @@ FLOWER flowers[6];
 
 BUTTERFLY butterflies[6];
 
+
+
 void initGame() {
  vOff = 0;
  hOff = 0;
@@ -1101,9 +1104,9 @@ void drawGame() {
 }
 
 void drawPlayer() {
- shadowOAM[0].attr0 = ((goog.row) >> 8) | (0<<13) | (0<<14);
-    shadowOAM[0].attr1 = goog.col | (1<<14);
-    shadowOAM[0].attr2 = ((0)<<12) | ((0)*32+(0));
+ shadowOAM[0].attr0 = ((goog.row) >> 8) | (0<<13) | (2<<14);
+    shadowOAM[0].attr1 = goog.col | (0<<14);
+    shadowOAM[0].attr2 = ((0)<<12) | ((0)*32+(goog.aniState));
 }
 
 void drawEnemy(BUTTERFLY* b, int index) {
@@ -1142,9 +1145,9 @@ void updateGame() {
  if (level == 1) {
   interval = 250;
  } else if (level == 2) {
-  interval = 200;
+  interval = 100;
  } else {
-  interval = 150;
+  interval = 50;
  }
 
  if (goog.timer >= interval) {
@@ -1157,14 +1160,14 @@ void updatePlayer() {
 
  if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))
   && goog.col >= goog.cdel) {
-
+  goog.aniState = 2;
   goog.col -= goog.cdel;
 
  }
 
  if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))
   && goog.col + goog.width - 1 < 240 - goog.cdel) {
-
+  goog.aniState = 1;
   goog.col += goog.cdel;
 
  }
@@ -1175,8 +1178,10 @@ void updatePlayer() {
   if (((goog.row + goog.rdel) >> 8) + goog.height - 1 > 160 ) {
    goog.isJumping = 0;
   }
+  goog.aniState = 0;
  } else {
   if((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
+   goog.aniState = 0;
    goog.rdel = -2550;
    goog.isJumping = 1;
   }

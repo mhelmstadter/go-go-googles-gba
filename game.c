@@ -28,6 +28,8 @@ FLOWER flowers[FLOWERCOUNT];
 // Enemies
 BUTTERFLY butterflies[ENEMYCOUNT];
 
+//enum { GOOGFRONT, GOOGLEFT, GOOGRIGHT};
+
 void initGame() {
 	vOff = 0;
 	hOff = 0;
@@ -112,9 +114,9 @@ void drawGame() {
 }
 
 void drawPlayer() {
-	shadowOAM[0].attr0 = SHIFTDOWN(goog.row) | ATTR0_4BPP | ATTR0_SQUARE;
-    shadowOAM[0].attr1 = goog.col | ATTR1_SMALL;
-    shadowOAM[0].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(0,0);
+	shadowOAM[0].attr0 = SHIFTDOWN(goog.row) | ATTR0_4BPP | ATTR0_TALL;
+    shadowOAM[0].attr1 = goog.col | ATTR1_TINY;
+    shadowOAM[0].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(0,goog.aniState);
 }
 
 void drawEnemy(BUTTERFLY* b, int index) {
@@ -153,9 +155,9 @@ void updateGame() {
 	if (level == 1) {
 		interval = 250;
 	} else if (level == 2) {
-		interval = 200;
+		interval = 100;
 	} else {
-		interval = 150;
+		interval = 50;
 	}
 
 	if (goog.timer >= interval) {
@@ -168,14 +170,14 @@ void updatePlayer() {
 
 	if (BUTTON_HELD(BUTTON_LEFT)
 		&& goog.col >= goog.cdel) {
-
+		goog.aniState = 2;
 		goog.col -= goog.cdel;
 
 	} 
 
 	if (BUTTON_HELD(BUTTON_RIGHT)
 		&& goog.col + goog.width - 1 < SCREENWIDTH - goog.cdel) {
-
+		goog.aniState = 1;
 		goog.col += goog.cdel;
 
 	}
@@ -186,8 +188,10 @@ void updatePlayer() {
 		if (SHIFTDOWN(goog.row + goog.rdel) + goog.height - 1 > SCREENHEIGHT ) {
 			goog.isJumping = 0;
 		}
+		goog.aniState = 0;
 	} else {
 		if(BUTTON_PRESSED(BUTTON_UP)) {
+			goog.aniState = 0;
 			goog.rdel = -JUMPPOWER;
 			goog.isJumping = 1;
 		}

@@ -35,6 +35,8 @@ void goToWin();
 void win();
 void goToLose();
 void lose();
+void level2();
+void level3();
 
 // States
 enum {START, GAME, INSTRUCTIONS, LEVEL2, LEVEL3, PAUSE, WIN, LOSE};
@@ -85,8 +87,10 @@ int main() {
                 break;
             case LEVEL2:
                 level2();
+                break;
             case LEVEL3:
                 level3();
+                break;
             case PAUSE:
                 pause();
                 break;
@@ -148,7 +152,7 @@ void goToStart() {
 
 // Runs every frame of the start state
 void start() {
-
+    level = 1;
     // Hide Sprites
     hideSprites();
 

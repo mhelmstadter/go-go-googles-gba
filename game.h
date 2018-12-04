@@ -9,6 +9,7 @@ typedef struct {
     int hide;
     int isJumping;
     int timer;
+    int aniState;
 } GOOG;
 
 // Butterflies Struct (Enemy)

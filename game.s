@@ -246,40 +246,40 @@ drawGame:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, lr}
 	ldr	r0, .L38
-	mov	r5, #0
+	push	{r4, r5, r6, lr}
 	mov	r2, r0
-	mov	r1, r0
 	mov	lr, #512
-	mov	r4, #64
+	mov	r1, r0
+	mov	r5, #64
 	ldr	r3, .L38+4
-	ldr	ip, [r3]
-	ldr	r3, [r3, #4]
-	orr	r3, r3, #16384
-	strh	r3, [r0, #2]	@ movhi
-	ldr	r3, .L38+8
-	asr	ip, ip, #8
-	strh	r5, [r0, #4]	@ movhi
+	ldr	ip, .L38+8
+	ldr	r4, [r3]
+	orr	ip, ip, r4, asr #8
+	ldr	r4, [r3, #4]
 	strh	ip, [r0]	@ movhi
+	ldr	ip, [r3, #36]
+	ldr	r3, .L38+12
+	strh	r4, [r0, #2]	@ movhi
+	strh	ip, [r0, #4]	@ movhi
 	add	ip, r3, #192
 .L30:
 	ldr	r0, [r3, #28]
 	cmp	r0, #0
 	ldrne	r0, [r3, #4]
-	ldrne	r5, [r3]
+	ldrne	r4, [r3]
 	orrne	r0, r0, #16384
 	add	r3, r3, #32
-	strhne	r4, [r1, #12]	@ movhi
+	strhne	r5, [r1, #12]	@ movhi
 	strhne	r0, [r1, #10]	@ movhi
-	strhne	r5, [r1, #8]	@ movhi
+	strhne	r4, [r1, #8]	@ movhi
 	strheq	lr, [r1, #8]	@ movhi
 	cmp	r3, ip
 	add	r1, r1, #8
 	bne	.L30
-	ldr	r3, .L38+12
+	ldr	r3, .L38+16
 	mov	lr, #512
-	ldr	r4, .L38+16
+	ldr	r4, .L38+20
 	add	ip, r3, #360
 	b	.L33
 .L32:
@@ -315,14 +315,14 @@ drawGame:
 	mov	r3, #128
 	mov	r2, #117440512
 	ldr	r1, .L38
-	ldr	r4, .L38+20
+	ldr	r4, .L38+24
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #67108864
-	ldr	r2, .L38+24
-	ldrh	r1, [r2]
 	ldr	r2, .L38+28
+	ldrh	r1, [r2]
+	ldr	r2, .L38+32
 	ldrh	r2, [r2]
 	strh	r1, [r3, #16]	@ movhi
 	pop	{r4, r5, r6, lr}
@@ -333,6 +333,7 @@ drawGame:
 .L38:
 	.word	shadowOAM
 	.word	goog
+	.word	-32768
 	.word	flowers
 	.word	butterflies
 	.word	511
@@ -351,20 +352,22 @@ drawPlayer:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	mov	r0, #0
-	ldr	r3, .L41
-	ldm	r3, {r1, r2}
-	ldr	r3, .L41+4
-	asr	r1, r1, #8
-	orr	r2, r2, #16384
-	strh	r1, [r3]	@ movhi
-	strh	r2, [r3, #2]	@ movhi
-	strh	r0, [r3, #4]	@ movhi
+	ldr	r1, .L41
+	ldr	r2, .L41+4
+	ldr	ip, [r1]
+	ldr	r3, .L41+8
+	ldr	r0, [r1, #4]
+	ldr	r1, [r1, #36]
+	orr	r2, r2, ip, asr #8
+	strh	r2, [r3]	@ movhi
+	strh	r0, [r3, #2]	@ movhi
+	strh	r1, [r3, #4]	@ movhi
 	bx	lr
 .L42:
 	.align	2
 .L41:
 	.word	goog
+	.word	-32768
 	.word	shadowOAM
 	.size	drawPlayer, .-drawPlayer
 	.align	2
@@ -461,18 +464,20 @@ updatePlayer:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r3, .L75
+	ldr	r3, .L74
 	ldrh	r3, [r3, #48]
 	tst	r3, #32
-	ldr	r3, .L75+4
+	ldr	r3, .L74+4
 	bne	.L64
 	ldr	r2, [r3, #4]
 	ldr	r1, [r3, #12]
 	cmp	r2, r1
+	movge	r0, #2
 	subge	r2, r2, r1
 	strge	r2, [r3, #4]
+	strge	r0, [r3, #36]
 .L64:
-	ldr	r2, .L75
+	ldr	r2, .L74
 	ldrh	r2, [r2, #48]
 	tst	r2, #16
 	bne	.L65
@@ -482,8 +487,10 @@ updatePlayer:
 	add	r2, r1, r2
 	rsb	ip, r0, #240
 	cmp	r2, ip
+	movle	r2, #1
 	addle	r1, r1, r0
 	strle	r1, [r3, #4]
+	strle	r2, [r3, #36]
 .L65:
 	ldr	r2, [r3, #28]
 	cmp	r2, #0
@@ -498,29 +505,32 @@ updatePlayer:
 	cmp	r1, #161
 	str	r2, [r3]
 	movgt	r2, #0
-	str	r0, [r3, #8]
 	strgt	r2, [r3, #28]
+	mov	r2, #0
+	str	r0, [r3, #8]
+	str	r2, [r3, #36]
 .L68:
 	ldr	r2, [r3, #32]
 	add	r2, r2, #1
 	str	r2, [r3, #32]
 	bx	lr
 .L66:
-	ldr	r2, .L75+8
+	ldr	r2, .L74+8
 	ldrh	r2, [r2]
 	tst	r2, #64
 	beq	.L68
-	ldr	r2, .L75+12
+	ldr	r2, .L74+12
 	ldrh	r2, [r2]
-	tst	r2, #64
-	moveq	r1, #1
-	ldreq	r2, .L75+16
-	streq	r1, [r3, #28]
-	streq	r2, [r3, #8]
+	ands	r2, r2, #64
+	moveq	r0, #1
+	ldreq	r1, .L74+16
+	streq	r2, [r3, #36]
+	streq	r0, [r3, #28]
+	streq	r1, [r3, #8]
 	b	.L68
-.L76:
-	.align	2
 .L75:
+	.align	2
+.L74:
 	.word	67109120
 	.word	goog
 	.word	oldButtons
@@ -539,41 +549,41 @@ updateEnemy:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
 	ldr	r2, [r0, #28]
-	ldr	r3, .L100
+	ldr	r3, .L99
 	cmp	r2, #0
 	sub	sp, sp, #16
 	mov	r4, r0
 	ldr	r2, [r3]
-	beq	.L78
+	beq	.L77
 	ldr	r3, [r0, #32]
 	add	r1, r0, #12
 	cmp	r3, #0
 	ldm	r1, {r1, ip}
 	ldr	r3, [r0, #4]
-	beq	.L79
+	beq	.L78
 	add	r3, ip, r3
 	add	r3, r3, r1
 	cmp	r3, #239
 	strgt	ip, [r0, #4]
-.L80:
+.L79:
 	cmp	r2, #0
-	bne	.L82
+	bne	.L81
 	ldr	r3, [r4, #4]
 	cmp	r3, #120
-	beq	.L90
-.L82:
+	beq	.L89
+.L81:
 	ldr	r5, [r4, #40]
 	cmp	r5, #0
-	beq	.L99
-.L85:
+	beq	.L98
+.L84:
 	ldr	r2, [r4, #48]
-	ldr	r3, .L100+4
+	ldr	r3, .L99+4
 	smull	r0, r1, r2, r3
 	asr	r3, r2, #31
 	rsb	r3, r3, r1, asr #3
 	add	r3, r3, r3, lsl #2
 	subs	r3, r2, r3, lsl #2
-	bne	.L87
+	bne	.L86
 	ldr	r1, [r4, #52]
 	ldr	r0, [r4, #56]
 	sub	r1, r1, #1
@@ -581,39 +591,39 @@ updateEnemy:
 	addlt	r0, r0, #1
 	strlt	r0, [r4, #56]
 	strge	r3, [r4, #56]
-.L87:
+.L86:
 	add	r2, r2, #1
 	str	r2, [r4, #48]
 	add	sp, sp, #16
 	@ sp needed
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L78:
+.L77:
 	cmp	r2, #0
-	bne	.L85
+	bne	.L84
 	ldr	r3, [r0, #4]
 	cmp	r3, #120
-	bne	.L85
-.L90:
+	bne	.L84
+.L89:
 	ldr	r3, [r4, #40]
 	cmp	r3, #0
-	bne	.L85
+	bne	.L84
 	mov	r1, #1
-	ldr	r2, .L100+8
+	ldr	r2, .L99+8
 	ldr	r3, [r2]
 	add	r3, r3, r1
 	str	r3, [r2]
 	str	r1, [r4, #40]
-	b	.L85
-.L79:
+	b	.L84
+.L78:
 	sub	r3, r3, r1
 	sub	r3, r3, ip
 	cmp	r3, #0
 	rsble	r3, ip, #240
 	strle	r3, [r4, #4]
-	b	.L80
-.L99:
-	ldr	r0, .L100+12
+	b	.L79
+.L98:
+	ldr	r0, .L99+12
 	ldr	r6, [r4, #20]
 	ldr	r3, [r0, #16]
 	ldr	r2, [r0, #20]
@@ -624,12 +634,12 @@ updateEnemy:
 	ldr	ip, [r4]
 	asr	r0, r0, #8
 	stm	sp, {ip, lr}
-	ldr	r6, .L100+16
+	ldr	r6, .L99+16
 	mov	lr, pc
 	bx	r6
 	cmp	r0, #0
 	strne	r5, [r4, #28]
-	bne	.L85
+	bne	.L84
 	ldr	r3, [r4, #32]
 	ldr	r2, [r4, #12]
 	cmp	r3, #0
@@ -637,10 +647,10 @@ updateEnemy:
 	addne	r3, r2, r3
 	subeq	r3, r3, r2
 	str	r3, [r4, #4]
-	b	.L85
-.L101:
-	.align	2
+	b	.L84
 .L100:
+	.align	2
+.L99:
 	.word	cheater
 	.word	1717986919
 	.word	stuck
@@ -662,9 +672,9 @@ updateFlower:
 	cmp	r3, #0
 	sub	sp, sp, #20
 	mov	r4, r0
-	beq	.L109
+	beq	.L108
 	ldr	lr, [r4, #16]
-	ldr	r0, .L111
+	ldr	r0, .L110
 	ldr	ip, [r4, #20]
 	ldr	r3, [r0, #16]
 	ldr	r2, [r0, #20]
@@ -675,22 +685,22 @@ updateFlower:
 	ldr	ip, [r4]
 	asr	r0, r0, #8
 	stm	sp, {ip, lr}
-	ldr	r5, .L111+4
+	ldr	r5, .L110+4
 	mov	lr, pc
 	bx	r5
 	cmp	r0, #0
-	bne	.L110
+	bne	.L109
 	add	sp, sp, #20
 	@ sp needed
 	pop	{r4, r5, r6, r7, lr}
 	bx	lr
-.L109:
+.L108:
 	mov	r3, #1
-	ldr	r5, .L111+8
+	ldr	r5, .L110+8
 	str	r3, [r0, #28]
 	mov	lr, pc
 	bx	r5
-	ldr	r3, .L111+12
+	ldr	r3, .L110+12
 	smull	r6, r7, r0, r3
 	asr	r3, r0, #31
 	rsb	r3, r3, r7, asr #6
@@ -700,7 +710,7 @@ updateFlower:
 	str	r0, [r4]
 	mov	lr, pc
 	bx	r5
-	ldr	r3, .L111+16
+	ldr	r3, .L110+16
 	smull	r6, r7, r0, r3
 	asr	r3, r0, #31
 	add	r2, r0, r7
@@ -714,16 +724,16 @@ updateFlower:
 	@ sp needed
 	pop	{r4, r5, r6, r7, lr}
 	bx	lr
-.L110:
+.L109:
 	mov	r3, #0
-	ldr	r2, .L111+20
-	ldr	r1, .L111+24
-	ldr	r0, .L111+28
-	ldr	r5, .L111+32
+	ldr	r2, .L110+20
+	ldr	r1, .L110+24
+	ldr	r0, .L110+28
+	ldr	r5, .L110+32
 	mov	lr, pc
 	bx	r5
 	mov	r1, #0
-	ldr	r2, .L111+36
+	ldr	r2, .L110+36
 	ldr	r3, [r2]
 	add	r3, r3, #5
 	str	r3, [r2]
@@ -732,9 +742,9 @@ updateFlower:
 	@ sp needed
 	pop	{r4, r5, r6, r7, lr}
 	bx	lr
-.L112:
-	.align	2
 .L111:
+	.align	2
+.L110:
 	.word	goog
 	.word	collision
 	.word	rand
@@ -756,21 +766,21 @@ fireEnemy:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r0, .L124
+	ldr	r0, .L123
 	mov	r2, r0
 	ldr	r1, [r2, #28]
 	cmp	r1, #0
 	mov	r3, #0
-	beq	.L123
-.L114:
+	beq	.L122
+.L113:
 	add	r3, r3, #1
 	cmp	r3, #6
 	add	r2, r2, #60
 	bxeq	lr
 	ldr	r1, [r2, #28]
 	cmp	r1, #0
-	bne	.L114
-.L123:
+	bne	.L113
+.L122:
 	rsb	r3, r3, r3, lsl #4
 	push	{r4, lr}
 	add	r4, r0, r3, lsl #2
@@ -780,9 +790,9 @@ fireEnemy:
 	str	r3, [r4, #28]
 	pop	{r4, lr}
 	bx	lr
-.L125:
-	.align	2
 .L124:
+	.align	2
+.L123:
 	.word	butterflies
 	.size	fireEnemy, .-fireEnemy
 	.align	2
@@ -798,21 +808,21 @@ updateGame:
 	push	{r4, r5, r6, lr}
 	mov	r4, #0
 	bl	updatePlayer
-	ldr	r0, .L135
+	ldr	r0, .L134
 	bl	updateFlower
-	ldr	r0, .L135+4
+	ldr	r0, .L134+4
 	bl	updateFlower
-	ldr	r0, .L135+8
+	ldr	r0, .L134+8
 	bl	updateFlower
-	ldr	r0, .L135+12
+	ldr	r0, .L134+12
 	bl	updateFlower
-	ldr	r0, .L135+16
+	ldr	r0, .L134+16
 	bl	updateFlower
-	ldr	r0, .L135+20
+	ldr	r0, .L134+20
 	mov	r5, r4
 	bl	updateFlower
-	ldr	r6, .L135+24
-.L128:
+	ldr	r6, .L134+24
+.L127:
 	ldr	r3, [r6, r4]
 	tst	r3, #1
 	moveq	r5, #1
@@ -821,29 +831,29 @@ updateGame:
 	add	r4, r4, #60
 	bl	updateEnemy
 	cmp	r4, #360
-	bne	.L128
-	ldr	r3, .L135+28
+	bne	.L127
+	ldr	r3, .L134+28
 	ldr	r3, [r3]
 	cmp	r3, #1
 	moveq	r3, #250
-	beq	.L129
+	beq	.L128
 	cmp	r3, #2
-	moveq	r3, #200
-	movne	r3, #150
-.L129:
-	ldr	r4, .L135+32
+	moveq	r3, #100
+	movne	r3, #50
+.L128:
+	ldr	r4, .L134+32
 	ldr	r2, [r4, #32]
 	cmp	r2, r3
-	blt	.L126
+	blt	.L125
 	bl	fireEnemy
 	mov	r3, #0
 	str	r3, [r4, #32]
-.L126:
+.L125:
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L136:
-	.align	2
 .L135:
+	.align	2
+.L134:
 	.word	flowers
 	.word	flowers+32
 	.word	flowers+64
@@ -856,7 +866,7 @@ updateGame:
 	.size	updateGame, .-updateGame
 	.comm	butterflies,360,4
 	.comm	flowers,192,4
-	.comm	goog,36,4
+	.comm	goog,40,4
 	.comm	shadowOAM,1024,4
 	.comm	level,4,4
 	.comm	cheater,4,4

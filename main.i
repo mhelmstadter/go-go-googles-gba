@@ -1403,7 +1403,7 @@ extern const unsigned short PauseScreenPal[256];
 # 8 "main.c" 2
 # 1 "MiscScreen.h" 1
 # 22 "MiscScreen.h"
-extern const unsigned short MiscScreenTiles[3184];
+extern const unsigned short MiscScreenTiles[3328];
 
 
 extern const unsigned short MiscScreenMap[1024];
@@ -1506,6 +1506,8 @@ void goToWin();
 void win();
 void goToLose();
 void lose();
+void level2();
+void level3();
 
 
 enum {START, GAME, INSTRUCTIONS, LEVEL2, LEVEL3, PAUSE, WIN, LOSE};
@@ -1556,8 +1558,10 @@ int main() {
                 break;
             case LEVEL2:
                 level2();
+                break;
             case LEVEL3:
                 level3();
+                break;
             case PAUSE:
                 pause();
                 break;
@@ -1619,7 +1623,7 @@ void goToStart() {
 
 
 void start() {
-
+    level = 1;
 
     hideSprites();
 
@@ -1652,7 +1656,7 @@ void goToInstructions() {
 
     (*(volatile unsigned short*)0x400000A) = (0<<14) | ((1)<<2) | ((29)<<8);
 
-    DMANow(3, MiscScreenTiles, &((charblock *)0x6000000)[1], 6368/2);
+    DMANow(3, MiscScreenTiles, &((charblock *)0x6000000)[1], 6656/2);
     DMANow(3, MiscScreenMap, &((screenblock *)0x6000000)[29], 2048/2);
 
     state = INSTRUCTIONS;
