@@ -1160,14 +1160,22 @@ void updatePlayer() {
 
  if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))
   && goog.col >= goog.cdel) {
-  goog.aniState = 2;
+  if(cheater) {
+   goog.aniState = 5;
+  } else {
+   goog.aniState = 2;
+  }
   goog.col -= goog.cdel;
 
  }
 
  if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))
   && goog.col + goog.width - 1 < 240 - goog.cdel) {
-  goog.aniState = 1;
+  if(cheater) {
+   goog.aniState = 4;
+  } else {
+   goog.aniState = 1;
+  }
   goog.col += goog.cdel;
 
  }
@@ -1178,7 +1186,12 @@ void updatePlayer() {
   if (((goog.row + goog.rdel) >> 8) + goog.height - 1 > 160 ) {
    goog.isJumping = 0;
   }
-  goog.aniState = 0;
+  if(cheater) {
+   goog.aniState = 3;
+  } else {
+   goog.aniState = 0;
+  }
+
  } else {
   if((!(~(oldButtons)&((1<<6))) && (~buttons & ((1<<6))))) {
    goog.aniState = 0;
@@ -1209,7 +1222,10 @@ void updateEnemy(BUTTERFLY* b) {
  if (b->active && !(b->stuck)) {
 
   if (collision(((goog.row) >> 8), goog.col, goog.height, goog.width, b->row, b->col, b->height, b->width)) {
-   b->active = 0;
+   if (!cheater) {
+    b->active = 0;
+   }
+
   } else {
 
    if (b->side) {

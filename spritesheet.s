@@ -325,52 +325,52 @@ spritesheetTiles:
 	.short	1638
 	.short	0
 	.short	0
+	.short	13056
+	.short	819
+	.short	29440
+	.short	882
+	.short	17152
+	.short	836
+	.short	8960
+	.short	804
+	.short	-28672
+	.short	153
+	.short	-28672
+	.short	146
+	.short	10496
+	.short	2339
 	.short	0
 	.short	0
+	.short	13056
+	.short	1075
+	.short	8960
+	.short	17447
+	.short	8960
+	.short	17442
+	.short	8960
+	.short	1058
+	.short	-28160
+	.short	153
+	.short	-26368
+	.short	34
+	.short	10496
+	.short	818
 	.short	0
 	.short	0
+	.short	16384
+	.short	13107
+	.short	17408
+	.short	12914
+	.short	17408
+	.short	12834
+	.short	16384
+	.short	12834
 	.short	0
+	.short	10649
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
+	.short	-26334
+	.short	12288
+	.short	-28125
 	.short	0
 	.short	0
 	.short	0
@@ -835,52 +835,52 @@ spritesheetTiles:
 	.short	1092
 	.short	0
 	.short	0
+	.short	10496
+	.short	2339
+	.short	14736
+	.short	-26317
+	.short	9104
+	.short	-27870
+	.short	8992
+	.short	8994
+	.short	13056
+	.short	819
+	.short	16384
+	.short	64
+	.short	17408
+	.short	1088
 	.short	0
 	.short	0
+	.short	10496
+	.short	819
+	.short	10496
+	.short	8755
+	.short	10496
+	.short	8755
+	.short	10496
+	.short	8755
+	.short	10496
+	.short	563
+	.short	17408
+	.short	0
+	.short	17408
+	.short	4
 	.short	0
 	.short	0
+	.short	12288
+	.short	-28109
+	.short	8704
+	.short	-28109
+	.short	8704
+	.short	-28109
+	.short	8704
+	.short	-28109
+	.short	8192
+	.short	-28109
 	.short	0
+	.short	17408
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
+	.short	17472
 	.short	0
 	.short	0
 	.short	0

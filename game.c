@@ -170,14 +170,22 @@ void updatePlayer() {
 
 	if (BUTTON_HELD(BUTTON_LEFT)
 		&& goog.col >= goog.cdel) {
-		goog.aniState = 2;
+		if(cheater) {
+			goog.aniState = 5;
+		} else {
+			goog.aniState = 2;
+		}
 		goog.col -= goog.cdel;
 
 	} 
 
 	if (BUTTON_HELD(BUTTON_RIGHT)
 		&& goog.col + goog.width - 1 < SCREENWIDTH - goog.cdel) {
-		goog.aniState = 1;
+		if(cheater) {
+			goog.aniState = 4;
+		} else {
+			goog.aniState = 1;
+		}
 		goog.col += goog.cdel;
 
 	}
@@ -188,7 +196,12 @@ void updatePlayer() {
 		if (SHIFTDOWN(goog.row + goog.rdel) + goog.height - 1 > SCREENHEIGHT ) {
 			goog.isJumping = 0;
 		}
-		goog.aniState = 0;
+		if(cheater) {
+			goog.aniState = 3;
+		} else {
+			goog.aniState = 0;
+		}
+		//goog.aniState = 0;
 	} else {
 		if(BUTTON_PRESSED(BUTTON_UP)) {
 			goog.aniState = 0;
@@ -219,7 +232,10 @@ void updateEnemy(BUTTERFLY* b) {
 	if (b->active && !(b->stuck)) {
 		// If it collides with the player...
 		if (collision(SHIFTDOWN(goog.row), goog.col, goog.height, goog.width, b->row, b->col, b->height, b->width)) {
-			b->active = 0;
+			if (!cheater) {
+				b->active = 0;
+			}
+			
 		} else {
 			// Left to Right
 			if (b->side) {
