@@ -13,6 +13,8 @@
 #include "JumpAround.h"
 #include "GameSong.h"
 #include "PrimaryTree.h"
+#include "Level2Splash.h"
+#include "Level3Splash.h"
 
 // Prototypes
 void initialize();
@@ -35,7 +37,7 @@ void goToLose();
 void lose();
 
 // States
-enum {START, GAME, INSTRUCTIONS, PAUSE, WIN, LOSE};
+enum {START, GAME, INSTRUCTIONS, LEVEL2, LEVEL3, PAUSE, WIN, LOSE};
 int state;
 
 // Button Variables
@@ -81,6 +83,10 @@ int main() {
             case INSTRUCTIONS:
                 instructions();
                 break;
+            case LEVEL2:
+                level2();
+            case LEVEL3:
+                level3();
             case PAUSE:
                 pause();
                 break;
@@ -193,11 +199,68 @@ void instructions() {
 }
 
 void goToLevel2Splash() {
+    REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
 
+     // Load Instructions Screen palette
+    DMANow(3, Level2SplashPal, PALETTE, 256);
+
+    //// BACKGROUND 0
+    // Set background 0 control register
+    REG_BG1CNT = BG_SIZE_SMALL | BG_CHARBLOCK(1) | BG_SCREENBLOCK(29);
+    // Load tiles to charblock and map to screenblock
+    DMANow(3, Level2SplashTiles, &CHARBLOCK[1], Level2SplashTilesLen/2);
+    DMANow(3, Level2SplashMap, &SCREENBLOCK[29], Level2SplashMapLen/2);
+
+    state = LEVEL2;
+}
+
+void level2() {
+    // Hide Sprites
+    hideSprites();
+
+    // State transitions
+    if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        //unpauseSound();
+        goToStart();
+    }
+
+    if (BUTTON_PRESSED(BUTTON_START)) {
+        initGame();
+        goToGame();
+    }
 }
 
 void goToLevel3Splash() {
-    
+    REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
+
+     // Load Instructions Screen palette
+    DMANow(3, Level3SplashPal, PALETTE, 256);
+
+    //// BACKGROUND 0
+    // Set background 0 control register
+    REG_BG1CNT = BG_SIZE_SMALL | BG_CHARBLOCK(1) | BG_SCREENBLOCK(29);
+    // Load tiles to charblock and map to screenblock
+    DMANow(3, Level3SplashTiles, &CHARBLOCK[1], Level3SplashTilesLen/2);
+    DMANow(3, Level3SplashMap, &SCREENBLOCK[29], Level3SplashMapLen/2);
+
+    state = LEVEL2;
+}
+
+void level3() {
+    // Hide Sprites
+    hideSprites();
+
+    // State transitions
+    if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        //unpauseSound();
+        goToStart();
+    }
+
+    if (BUTTON_PRESSED(BUTTON_START)) {
+        initGame();
+        goToGame();
+    }
+
 }
 
 // Sets up the game state
@@ -245,6 +308,7 @@ void game() {
         } else {
             goToWin();
         }
+        score = 0;
         level++;
     }
 

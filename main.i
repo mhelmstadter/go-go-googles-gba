@@ -1466,6 +1466,26 @@ extern const unsigned short PrimaryTreeMap[1024];
 
 extern const unsigned short PrimaryTreePal[256];
 # 16 "main.c" 2
+# 1 "Level2Splash.h" 1
+# 22 "Level2Splash.h"
+extern const unsigned short Level2SplashTiles[2064];
+
+
+extern const unsigned short Level2SplashMap[1024];
+
+
+extern const unsigned short Level2SplashPal[256];
+# 17 "main.c" 2
+# 1 "Level3Splash.h" 1
+# 22 "Level3Splash.h"
+extern const unsigned short Level3SplashTiles[2064];
+
+
+extern const unsigned short Level3SplashMap[1024];
+
+
+extern const unsigned short Level3SplashPal[256];
+# 18 "main.c" 2
 
 
 void initialize();
@@ -1488,7 +1508,7 @@ void goToLose();
 void lose();
 
 
-enum {START, GAME, INSTRUCTIONS, PAUSE, WIN, LOSE};
+enum {START, GAME, INSTRUCTIONS, LEVEL2, LEVEL3, PAUSE, WIN, LOSE};
 int state;
 
 
@@ -1534,6 +1554,10 @@ int main() {
             case INSTRUCTIONS:
                 instructions();
                 break;
+            case LEVEL2:
+                level2();
+            case LEVEL3:
+                level3();
             case PAUSE:
                 pause();
                 break;
@@ -1646,10 +1670,67 @@ void instructions() {
 }
 
 void goToLevel2Splash() {
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12);
 
+
+    DMANow(3, Level2SplashPal, ((unsigned short *)0x5000000), 256);
+
+
+
+    (*(volatile unsigned short*)0x400000A) = (0<<14) | ((1)<<2) | ((29)<<8);
+
+    DMANow(3, Level2SplashTiles, &((charblock *)0x6000000)[1], 4128/2);
+    DMANow(3, Level2SplashMap, &((screenblock *)0x6000000)[29], 2048/2);
+
+    state = LEVEL2;
+}
+
+void level2() {
+
+    hideSprites();
+
+
+    if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+
+        goToStart();
+    }
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        initGame();
+        goToGame();
+    }
 }
 
 void goToLevel3Splash() {
+    (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12);
+
+
+    DMANow(3, Level3SplashPal, ((unsigned short *)0x5000000), 256);
+
+
+
+    (*(volatile unsigned short*)0x400000A) = (0<<14) | ((1)<<2) | ((29)<<8);
+
+    DMANow(3, Level3SplashTiles, &((charblock *)0x6000000)[1], 4128/2);
+    DMANow(3, Level3SplashMap, &((screenblock *)0x6000000)[29], 2048/2);
+
+    state = LEVEL2;
+}
+
+void level3() {
+
+    hideSprites();
+
+
+    if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+
+        goToStart();
+    }
+
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        initGame();
+        goToGame();
+    }
 
 }
 
@@ -1698,6 +1779,7 @@ void game() {
         } else {
             goToWin();
         }
+        score = 0;
         level++;
     }
 
