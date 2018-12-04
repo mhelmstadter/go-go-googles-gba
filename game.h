@@ -66,6 +66,7 @@ void fireEnemy();
 extern int score;
 extern int stuck;
 extern int cheater;
+extern int level;
 
 // Jump Variables
 #define FANCY

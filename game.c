@@ -12,6 +12,7 @@ int vOff;
 int score;
 int stuck;
 int cheater;
+int level;
 // Jumping
 
 
@@ -56,7 +57,7 @@ void initEnemies() {
 }
 
 void initEnemy(BUTTERFLY* b) {
-	b->row = rand() % 150 + 10;
+	b->row = rand() % 130 + 10;
 	b->width = 16;
 	b->active = 0;
 	b->height = 16;
@@ -137,6 +138,7 @@ void drawFlower(FLOWER* f, int index) {
 }
 
 void updateGame() {
+	int interval;
 	int s = 0;
 	updatePlayer();
 	for (int i = 0; i < FLOWERCOUNT; i++) {
@@ -148,7 +150,15 @@ void updateGame() {
 		}
 		updateEnemy(&butterflies[i], s);
 	}
-	if (goog.timer >= 250) {
+	if (level == 1) {
+		interval = 250;
+	} else if (level == 2) {
+		interval = 200;
+	} else {
+		interval = 150;
+	}
+
+	if (goog.timer >= interval) {
 		fireEnemy();
 		goog.timer = 0;
 	}
@@ -230,8 +240,8 @@ void updateEnemy(BUTTERFLY* b) {
 void updateFlower(FLOWER* f) {
 	if (!(f->active)) {
 		f->active = 1;
-		f->row = rand() % 140 + 20;
-		f->col = rand() % 230 + 10; 
+		f->row = rand() % 130 + 10;
+		f->col = rand() % 210 + 10; 
 	} else {
 	// If it collides with the player...
 		if (collision(SHIFTDOWN(goog.row), goog.col, goog.height, goog.width, f->row, f->col, f->height, f->width)) {

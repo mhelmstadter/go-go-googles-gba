@@ -54,6 +54,8 @@ char buffer[41];
 
 int main() {
 
+    level = 1;
+
     setupSounds();
     setupInterrupts();
 
@@ -190,6 +192,14 @@ void instructions() {
     }
 }
 
+void goToLevel2Splash() {
+
+}
+
+void goToLevel3Splash() {
+    
+}
+
 // Sets up the game state
 void goToGame() {
     REG_DISPCTL = MODE0 | BG1_ENABLE | BG0_ENABLE | SPRITE_ENABLE;
@@ -228,7 +238,14 @@ void game() {
 
     // Check win and lose conditions
     if (score >= 100) {
-        goToWin();
+        if (level == 1) {
+            goToLevel2Splash();
+        } else if (level == 2) {
+            goToLevel3Splash();
+        } else {
+            goToWin();
+        }
+        level++;
     }
 
     if (BUTTON_PRESSED(BUTTON_B)) {

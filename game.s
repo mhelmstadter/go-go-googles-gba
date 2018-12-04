@@ -160,16 +160,13 @@ initEnemy:
 	mov	lr, #1
 	ldr	r3, .L19+4
 	smull	r6, r7, r0, r3
-	asr	r3, r0, #31
-	rsb	r3, r3, r7, asr #4
 	ldr	r2, .L19+8
-	add	r3, r3, r3, lsl #2
+	asr	r3, r0, #31
 	ldr	r2, [r2, #4]
-	rsb	r3, r3, r3, lsl #4
-	sub	r3, r0, r3, lsl lr
+	rsb	r3, r3, r7, asr #6
 	ands	r2, r2, lr
-	add	r3, r3, #10
-	str	r3, [r4]
+	add	r3, r3, r3, lsl #6
+	sub	r0, r0, r3, lsl lr
 	moveq	r3, #224
 	mov	ip, #16
 	mov	r1, #0
@@ -177,6 +174,8 @@ initEnemy:
 	streq	r3, [r4, #4]
 	mov	r2, #3
 	mov	r3, #0
+	add	r0, r0, #10
+	str	r0, [r4]
 	str	ip, [r4, #16]
 	str	ip, [r4, #20]
 	str	r1, [r4, #28]
@@ -195,7 +194,7 @@ initEnemy:
 	.align	2
 .L19:
 	.word	rand
-	.word	458129845
+	.word	2114445439
 	.word	goog
 	.size	initEnemy, .-initEnemy
 	.align	2
@@ -691,27 +690,26 @@ updateFlower:
 	str	r3, [r0, #28]
 	mov	lr, pc
 	bx	r5
-	ldr	r1, .L111+12
-	smull	r2, r3, r0, r1
-	add	r2, r0, r3
+	ldr	r3, .L111+12
+	smull	r6, r7, r0, r3
 	asr	r3, r0, #31
-	rsb	r3, r3, r2, asr #7
-	add	r3, r3, r3, lsl #2
-	rsb	r3, r3, r3, lsl #3
-	sub	r3, r0, r3, lsl #2
-	add	r3, r3, #20
-	str	r3, [r4]
+	rsb	r3, r3, r7, asr #6
+	add	r3, r3, r3, lsl #6
+	sub	r0, r0, r3, lsl #1
+	add	r0, r0, #10
+	str	r0, [r4]
 	mov	lr, pc
 	bx	r5
-	mov	r2, #230
 	ldr	r3, .L111+16
 	smull	r6, r7, r0, r3
 	asr	r3, r0, #31
-	rsb	r1, r3, r7, asr #6
-	mul	r3, r2, r1
-	sub	r0, r0, r3
-	add	r0, r0, #10
-	str	r0, [r4, #4]
+	add	r2, r0, r7
+	rsb	r3, r3, r2, asr #7
+	rsb	r3, r3, r3, lsl #3
+	rsb	r3, r3, r3, lsl #4
+	sub	r3, r0, r3, lsl #1
+	add	r3, r3, #10
+	str	r3, [r4, #4]
 	add	sp, sp, #20
 	@ sp needed
 	pop	{r4, r5, r6, r7, lr}
@@ -740,8 +738,8 @@ updateFlower:
 	.word	goog
 	.word	collision
 	.word	rand
-	.word	-368140053
-	.word	1195121335
+	.word	2114445439
+	.word	-1677082467
 	.word	11025
 	.word	10250
 	.word	Ding
@@ -800,20 +798,20 @@ updateGame:
 	push	{r4, r5, r6, lr}
 	mov	r4, #0
 	bl	updatePlayer
-	ldr	r0, .L132
+	ldr	r0, .L135
 	bl	updateFlower
-	ldr	r0, .L132+4
+	ldr	r0, .L135+4
 	bl	updateFlower
-	ldr	r0, .L132+8
+	ldr	r0, .L135+8
 	bl	updateFlower
-	ldr	r0, .L132+12
+	ldr	r0, .L135+12
 	bl	updateFlower
-	ldr	r0, .L132+16
+	ldr	r0, .L135+16
 	bl	updateFlower
-	ldr	r0, .L132+20
+	ldr	r0, .L135+20
 	mov	r5, r4
 	bl	updateFlower
-	ldr	r6, .L132+24
+	ldr	r6, .L135+24
 .L128:
 	ldr	r3, [r6, r4]
 	tst	r3, #1
@@ -824,19 +822,28 @@ updateGame:
 	bl	updateEnemy
 	cmp	r4, #360
 	bne	.L128
-	ldr	r4, .L132+28
-	ldr	r3, [r4, #32]
-	cmp	r3, #249
-	ble	.L126
+	ldr	r3, .L135+28
+	ldr	r3, [r3]
+	cmp	r3, #1
+	moveq	r3, #250
+	beq	.L129
+	cmp	r3, #2
+	moveq	r3, #200
+	movne	r3, #150
+.L129:
+	ldr	r4, .L135+32
+	ldr	r2, [r4, #32]
+	cmp	r2, r3
+	blt	.L126
 	bl	fireEnemy
 	mov	r3, #0
 	str	r3, [r4, #32]
 .L126:
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L133:
+.L136:
 	.align	2
-.L132:
+.L135:
 	.word	flowers
 	.word	flowers+32
 	.word	flowers+64
@@ -844,12 +851,14 @@ updateGame:
 	.word	flowers+128
 	.word	flowers+160
 	.word	butterflies
+	.word	level
 	.word	goog
 	.size	updateGame, .-updateGame
 	.comm	butterflies,360,4
 	.comm	flowers,192,4
 	.comm	goog,36,4
 	.comm	shadowOAM,1024,4
+	.comm	level,4,4
 	.comm	cheater,4,4
 	.comm	stuck,4,4
 	.comm	score,4,4

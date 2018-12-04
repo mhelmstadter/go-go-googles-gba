@@ -204,6 +204,32 @@ instructions:
 	.word	unpauseSound
 	.size	instructions, .-instructions
 	.align	2
+	.global	goToLevel2Splash
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	goToLevel2Splash, %function
+goToLevel2Splash:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	bx	lr
+	.size	goToLevel2Splash, .-goToLevel2Splash
+	.align	2
+	.global	goToLevel3Splash
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	goToLevel3Splash, %function
+goToLevel3Splash:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	bx	lr
+	.size	goToLevel3Splash, .-goToLevel3Splash
+	.align	2
 	.global	goToGame
 	.syntax unified
 	.arm
@@ -216,53 +242,53 @@ goToGame:
 	push	{r4, r5, r6, lr}
 	mov	r2, #4864
 	mov	r5, #67108864
-	ldr	r4, .L25
+	ldr	r4, .L27
 	strh	r2, [r5]	@ movhi
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L25+4
+	ldr	r1, .L27+4
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #8064
 	mov	r3, #4800
 	strh	r2, [r5, #8]	@ movhi
-	ldr	r1, .L25+8
+	ldr	r1, .L27+8
 	mov	r2, #100663296
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L25+12
-	ldr	r1, .L25+16
+	ldr	r2, .L27+12
+	ldr	r1, .L27+16
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r2, .L25+20
+	ldr	r2, .L27+20
 	mov	r3, #16128
 	strh	r2, [r5, #10]	@ movhi
-	ldr	r1, .L25+24
-	ldr	r2, .L25+28
+	ldr	r1, .L27+24
+	ldr	r2, .L27+28
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r2, .L25+32
+	ldr	r2, .L27+32
 	mov	r3, #1024
-	ldr	r1, .L25+36
+	ldr	r1, .L27+36
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L25+40
+	ldr	r3, .L27+40
 	mov	lr, pc
 	bx	r3
 	mov	r2, #1
-	ldr	r3, .L25+44
+	ldr	r3, .L27+44
 	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
-.L26:
+.L28:
 	.align	2
-.L25:
+.L27:
 	.word	DMANow
 	.word	BlankTreeBGPal
 	.word	PrimaryTreeTiles
@@ -287,53 +313,53 @@ start:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	ldr	r3, .L39
-	ldr	r4, .L39+4
+	ldr	r3, .L41
+	ldr	r4, .L41+4
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L39+8
+	ldr	r3, .L41+8
 	mov	lr, pc
 	bx	r3
 	ldrh	r3, [r4]
 	tst	r3, #8
-	beq	.L28
-	ldr	r2, .L39+12
+	beq	.L30
+	ldr	r2, .L41+12
 	ldrh	r2, [r2]
 	tst	r2, #8
-	beq	.L37
-.L28:
+	beq	.L39
+.L30:
 	tst	r3, #1
-	beq	.L27
-	ldr	r3, .L39+12
+	beq	.L29
+	ldr	r3, .L41+12
 	ldrh	r3, [r3]
 	tst	r3, #1
-	beq	.L38
-.L27:
+	beq	.L40
+.L29:
 	pop	{r4, r5, r6, lr}
 	bx	lr
-.L38:
+.L40:
 	pop	{r4, r5, r6, lr}
 	b	goToInstructions
-.L37:
-	ldr	r3, .L39+16
+.L39:
+	ldr	r3, .L41+16
 	mov	lr, pc
 	bx	r3
-	ldr	r5, .L39+20
-	ldr	r2, .L39+24
-	ldr	r1, .L39+28
-	ldr	r0, .L39+32
+	ldr	r5, .L41+20
+	ldr	r2, .L41+24
+	ldr	r1, .L41+28
+	ldr	r0, .L41+32
 	mov	r3, #1
 	mov	lr, pc
 	bx	r5
-	ldr	r3, .L39+36
+	ldr	r3, .L41+36
 	mov	lr, pc
 	bx	r3
 	bl	goToGame
 	ldrh	r3, [r4]
-	b	.L28
-.L40:
+	b	.L30
+.L42:
 	.align	2
-.L39:
+.L41:
 	.word	hideSprites
 	.word	oldButtons
 	.word	waitForVBlank
@@ -358,36 +384,36 @@ goToPause:
 	push	{r4, r5, r6, lr}
 	mov	r2, #4608
 	mov	r5, #67108864
-	ldr	r4, .L43
+	ldr	r4, .L45
 	strh	r2, [r5]	@ movhi
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L43+4
+	ldr	r1, .L45+4
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r2, .L43+8
+	ldr	r2, .L45+8
 	mov	r3, #1776
 	strh	r2, [r5, #10]	@ movhi
-	ldr	r1, .L43+12
-	ldr	r2, .L43+16
+	ldr	r1, .L45+12
+	ldr	r2, .L45+16
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L43+20
-	ldr	r1, .L43+24
+	ldr	r2, .L45+20
+	ldr	r1, .L45+24
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #3
-	ldr	r3, .L43+28
+	ldr	r3, .L45+28
 	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
-.L44:
+.L46:
 	.align	2
-.L43:
+.L45:
 	.word	DMANow
 	.word	PauseScreenPal
 	.word	7428
@@ -408,47 +434,47 @@ pause:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}
-	ldr	r4, .L57
-	ldr	r3, .L57+4
+	ldr	r4, .L59
+	ldr	r3, .L59+4
 	mov	lr, pc
 	bx	r3
 	ldrh	r3, [r4]
 	tst	r3, #8
-	beq	.L46
-	ldr	r2, .L57+8
+	beq	.L48
+	ldr	r2, .L59+8
 	ldrh	r2, [r2]
 	tst	r2, #8
-	beq	.L55
-.L46:
+	beq	.L57
+.L48:
 	tst	r3, #4
-	beq	.L45
-	ldr	r3, .L57+8
+	beq	.L47
+	ldr	r3, .L59+8
 	ldrh	r3, [r3]
 	tst	r3, #4
-	beq	.L56
-.L45:
+	beq	.L58
+.L47:
 	pop	{r4, lr}
 	bx	lr
-.L56:
-	ldr	r4, .L57+12
+.L58:
+	ldr	r4, .L59+12
 	mov	r3, #1
-	ldr	r2, .L57+16
-	ldr	r1, .L57+20
-	ldr	r0, .L57+24
+	ldr	r2, .L59+16
+	ldr	r1, .L59+20
+	ldr	r0, .L59+24
 	mov	lr, pc
 	bx	r4
 	pop	{r4, lr}
 	b	goToStart
-.L55:
-	ldr	r3, .L57+28
+.L57:
+	ldr	r3, .L59+28
 	mov	lr, pc
 	bx	r3
 	bl	goToGame
 	ldrh	r3, [r4]
-	b	.L46
-.L58:
+	b	.L48
+.L60:
 	.align	2
-.L57:
+.L59:
 	.word	oldButtons
 	.word	hideSprites
 	.word	buttons
@@ -471,39 +497,39 @@ goToWin:
 	push	{r4, r5, r6, lr}
 	mov	r2, #4608
 	mov	r5, #67108864
-	ldr	r3, .L61
+	ldr	r3, .L63
 	strh	r2, [r5]	@ movhi
 	mov	lr, pc
 	bx	r3
-	ldr	r4, .L61+4
+	ldr	r4, .L63+4
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L61+8
+	ldr	r1, .L63+8
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r2, .L61+12
+	ldr	r2, .L63+12
 	mov	r3, #1296
 	strh	r2, [r5, #10]	@ movhi
-	ldr	r1, .L61+16
-	ldr	r2, .L61+20
+	ldr	r1, .L63+16
+	ldr	r2, .L63+20
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L61+24
-	ldr	r1, .L61+28
+	ldr	r2, .L63+24
+	ldr	r1, .L63+28
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #4
-	ldr	r3, .L61+32
+	ldr	r3, .L63+32
 	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
-.L62:
+.L64:
 	.align	2
-.L61:
+.L63:
 	.word	stopSound
 	.word	DMANow
 	.word	WinScreenPal
@@ -524,27 +550,27 @@ win:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	ldr	r3, .L70
+	ldr	r3, .L72
 	push	{r4, lr}
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L70+4
+	ldr	r3, .L72+4
 	ldrh	r3, [r3]
 	tst	r3, #8
-	beq	.L63
-	ldr	r3, .L70+8
+	beq	.L65
+	ldr	r3, .L72+8
 	ldrh	r3, [r3]
 	tst	r3, #8
-	beq	.L69
-.L63:
+	beq	.L71
+.L65:
 	pop	{r4, lr}
 	bx	lr
-.L69:
+.L71:
 	pop	{r4, lr}
 	b	goToStart
-.L71:
+.L73:
 	.align	2
-.L70:
+.L72:
 	.word	hideSprites
 	.word	oldButtons
 	.word	buttons
@@ -560,41 +586,41 @@ goToLose:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	ldr	r3, .L74
+	ldr	r3, .L76
 	mov	lr, pc
 	bx	r3
 	mov	r5, #67108864
 	mov	r2, #4608
-	ldr	r4, .L74+4
+	ldr	r4, .L76+4
 	strh	r2, [r5]	@ movhi
 	mov	r3, #256
 	mov	r2, #83886080
-	ldr	r1, .L74+8
+	ldr	r1, .L76+8
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	ldr	r2, .L74+12
+	ldr	r2, .L76+12
 	mov	r3, #1328
 	strh	r2, [r5, #10]	@ movhi
-	ldr	r1, .L74+16
-	ldr	r2, .L74+20
+	ldr	r1, .L76+16
+	ldr	r2, .L76+20
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
-	ldr	r2, .L74+24
-	ldr	r1, .L74+28
+	ldr	r2, .L76+24
+	ldr	r1, .L76+28
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
 	mov	r2, #5
-	ldr	r3, .L74+32
+	ldr	r3, .L76+32
 	pop	{r4, r5, r6, lr}
 	str	r2, [r3]
 	bx	lr
-.L75:
+.L77:
 	.align	2
-.L74:
+.L76:
 	.word	stopSound
 	.word	DMANow
 	.word	LoseScreenPal
@@ -615,74 +641,84 @@ game:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, lr}
-	ldr	r4, .L91
+	push	{r4, r5, r6, lr}
+	ldr	r4, .L94
 	ldrh	r3, [r4]
 	tst	r3, #8
-	beq	.L77
-	ldr	r3, .L91+4
+	beq	.L79
+	ldr	r3, .L94+4
 	ldrh	r3, [r3]
 	tst	r3, #8
-	beq	.L88
-.L77:
-	ldr	r3, .L91+8
+	beq	.L91
+.L79:
+	ldr	r3, .L94+8
 	ldr	r3, [r3]
 	cmp	r3, #99
-	bgt	.L89
-.L78:
+	ble	.L80
+	ldr	r5, .L94+12
+	ldr	r3, [r5]
+	sub	r2, r3, #1
+	cmp	r2, #1
+	bhi	.L92
+.L81:
+	add	r3, r3, #1
+	str	r3, [r5]
+.L80:
 	ldrh	r3, [r4]
 	tst	r3, #2
-	beq	.L79
-	ldr	r3, .L91+4
+	beq	.L82
+	ldr	r3, .L94+4
 	ldrh	r3, [r3]
 	tst	r3, #2
-	beq	.L90
-.L79:
-	ldr	r3, .L91+12
+	beq	.L93
+.L82:
+	ldr	r3, .L94+16
 	ldr	r3, [r3]
 	cmp	r3, #5
 	blgt	goToLose
-.L80:
-	ldr	r3, .L91+16
+.L83:
+	ldr	r3, .L94+20
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L91+20
+	ldr	r3, .L94+24
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L91+24
+	ldr	r3, .L94+28
 	mov	lr, pc
 	bx	r3
-	ldr	r4, .L91+28
+	ldr	r4, .L94+32
 	mov	r3, #512
 	mov	r2, #117440512
-	ldr	r1, .L91+32
+	ldr	r1, .L94+36
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	pop	{r4, lr}
+	pop	{r4, r5, r6, lr}
 	bx	lr
-.L90:
-	ldr	r2, .L91+36
+.L93:
+	ldr	r2, .L94+40
 	ldr	r3, [r2]
 	rsbs	r3, r3, #1
 	movcc	r3, #0
 	str	r3, [r2]
-	b	.L79
-.L89:
-	bl	goToWin
-	b	.L78
-.L88:
-	ldr	r3, .L91+40
+	b	.L82
+.L91:
+	ldr	r3, .L94+44
 	mov	lr, pc
 	bx	r3
 	bl	goToPause
-	b	.L77
+	b	.L79
 .L92:
+	bl	goToWin
+	ldr	r3, [r5]
+	b	.L81
+.L95:
 	.align	2
-.L91:
+.L94:
 	.word	oldButtons
 	.word	buttons
 	.word	score
+	.word	level
 	.word	stuck
 	.word	updateGame
 	.word	drawGame
@@ -705,77 +741,81 @@ main:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r7, fp, lr}
-	ldr	r3, .L105
+	mov	r4, #1
+	ldr	r2, .L108
+	ldr	r3, .L108+4
+	str	r4, [r2]
 	mov	lr, pc
 	bx	r3
-	ldr	r3, .L105+4
+	ldr	r3, .L108+8
 	mov	lr, pc
 	bx	r3
-	ldr	r4, .L105+8
-	mov	r3, #1
-	ldr	r2, .L105+12
-	ldr	r1, .L105+16
-	ldr	r0, .L105+20
+	mov	r3, r4
+	ldr	r2, .L108+12
+	ldr	r1, .L108+16
+	ldr	r0, .L108+20
+	ldr	r4, .L108+24
 	mov	lr, pc
 	bx	r4
-	ldr	r3, .L105+24
+	ldr	r3, .L108+28
 	mov	lr, pc
 	bx	r3
-	ldr	r6, .L105+28
-	ldr	r8, .L105+32
-	ldr	r5, .L105+36
-	ldr	fp, .L105+40
-	ldr	r10, .L105+44
-	ldr	r9, .L105+48
-	ldr	r7, .L105+52
-	ldr	r4, .L105+56
-.L94:
+	ldr	r6, .L108+32
+	ldr	r8, .L108+36
+	ldr	r5, .L108+40
+	ldr	fp, .L108+44
+	ldr	r10, .L108+48
+	ldr	r9, .L108+52
+	ldr	r7, .L108+56
+	ldr	r4, .L108+60
+.L97:
 	ldr	r2, [r6]
 	ldrh	r3, [r8]
-.L95:
+.L98:
 	strh	r3, [r5]	@ movhi
 	ldrh	r3, [r4, #48]
 	strh	r3, [r8]	@ movhi
 	cmp	r2, #5
 	ldrls	pc, [pc, r2, asl #2]
-	b	.L95
-.L97:
-	.word	.L96
-	.word	.L98
+	b	.L98
+.L100:
 	.word	.L99
-	.word	.L100
 	.word	.L101
-	.word	.L101
-.L101:
+	.word	.L102
+	.word	.L103
+	.word	.L104
+	.word	.L104
+.L104:
 	mov	lr, pc
 	bx	r7
-	b	.L94
-.L100:
-	ldr	r3, .L105+60
+	b	.L97
+.L103:
+	ldr	r3, .L108+64
 	mov	lr, pc
 	bx	r3
-	b	.L94
-.L99:
+	b	.L97
+.L102:
 	mov	lr, pc
 	bx	r9
-	b	.L94
-.L98:
+	b	.L97
+.L101:
 	mov	lr, pc
 	bx	r10
-	b	.L94
-.L96:
+	b	.L97
+.L99:
 	mov	lr, pc
 	bx	fp
-	b	.L94
-.L106:
+	b	.L97
+.L109:
 	.align	2
-.L105:
+.L108:
+	.word	level
 	.word	setupSounds
 	.word	setupInterrupts
-	.word	playSoundA
 	.word	11025
 	.word	2371392
 	.word	JumpAround
+	.word	playSoundA
 	.word	initialize
 	.word	state
 	.word	buttons

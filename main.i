@@ -1364,6 +1364,7 @@ void fireEnemy();
 extern int score;
 extern int stuck;
 extern int cheater;
+extern int level;
 # 5 "main.c" 2
 # 1 "sound.h" 1
 SOUND soundA;
@@ -1506,6 +1507,8 @@ char buffer[41];
 
 int main() {
 
+    level = 1;
+
     setupSounds();
     setupInterrupts();
 
@@ -1642,6 +1645,14 @@ void instructions() {
     }
 }
 
+void goToLevel2Splash() {
+
+}
+
+void goToLevel3Splash() {
+
+}
+
 
 void goToGame() {
     (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<8) | (1<<12);
@@ -1680,7 +1691,14 @@ void game() {
 
 
     if (score >= 100) {
-        goToWin();
+        if (level == 1) {
+            goToLevel2Splash();
+        } else if (level == 2) {
+            goToLevel3Splash();
+        } else {
+            goToWin();
+        }
+        level++;
     }
 
     if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
