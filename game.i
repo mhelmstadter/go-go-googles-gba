@@ -1174,9 +1174,7 @@ void updatePlayer() {
 }
 
 
-void updateEnemy(BUTTERFLY* b, int s) {
-
- int r = rand() % 140 + 10;
+void updateEnemy(BUTTERFLY* b) {
  if (b->active) {
   if (b->side && b->col + b->width + b->cdel >= 240) {
    b->col = b->width;
@@ -1220,7 +1218,7 @@ void updateEnemy(BUTTERFLY* b, int s) {
 void updateFlower(FLOWER* f) {
  if (!(f->active)) {
   f->active = 1;
-  f->row = rand() % 150 + 10;
+  f->row = rand() % 140 + 20;
   f->col = rand() % 230 + 10;
  } else {
 

@@ -186,9 +186,7 @@ void updatePlayer() {
 }
 
 // On update, the butterflies should "fly" in from either the left or right side, unless they have reached the center of the screen.
-void updateEnemy(BUTTERFLY* b, int s) {
-	// s is the side that the butterfly should come in on
-	int r = rand() % 140 + 10;
+void updateEnemy(BUTTERFLY* b) {
 	if (b->active) {
 		if (b->side && b->col + b->width + b->cdel >= SCREENWIDTH) {
 			b->col = b->width;
@@ -232,7 +230,7 @@ void updateEnemy(BUTTERFLY* b, int s) {
 void updateFlower(FLOWER* f) {
 	if (!(f->active)) {
 		f->active = 1;
-		f->row = rand() % 150 + 10;
+		f->row = rand() % 140 + 20;
 		f->col = rand() % 230 + 10; 
 	} else {
 	// If it collides with the player...

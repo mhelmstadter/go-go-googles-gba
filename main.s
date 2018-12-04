@@ -224,8 +224,8 @@ goToGame:
 	mov	r0, #3
 	mov	lr, pc
 	bx	r4
-	mov	r2, #7936
-	mov	r3, #2400
+	mov	r2, #8064
+	mov	r3, #4800
 	strh	r2, [r5, #8]	@ movhi
 	ldr	r1, .L25+8
 	mov	r2, #100663296
@@ -239,7 +239,7 @@ goToGame:
 	mov	lr, pc
 	bx	r4
 	ldr	r2, .L25+20
-	mov	r3, #8064
+	mov	r3, #16128
 	strh	r2, [r5, #10]	@ movhi
 	ldr	r1, .L25+24
 	ldr	r2, .L25+28
@@ -268,7 +268,7 @@ goToGame:
 	.word	PrimaryTreeTiles
 	.word	100726784
 	.word	PrimaryTreeMap
-	.word	7428
+	.word	7556
 	.word	BlankTreeBGTiles
 	.word	100679680
 	.word	100722688

@@ -199,14 +199,14 @@ void goToGame() {
     
     //// BACKGROUND 0
     // Set background 0 control register
-    REG_BG0CNT = BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
+    REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(31);
     // Load tiles to charblock and map to screenblock
     DMANow(3, PrimaryTreeTiles, &CHARBLOCK[0], PrimaryTreeTilesLen/2);
     DMANow(3, PrimaryTreeMap, &SCREENBLOCK[31], PrimaryTreeMapLen/2);
     
     //// BACKGROUND 1
     // Set background 1 control register
-    REG_BG1CNT = BG_SIZE_SMALL | BG_CHARBLOCK(1) | BG_SCREENBLOCK(29);
+    REG_BG1CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(1) | BG_SCREENBLOCK(29);
     DMANow(3, BlankTreeBGTiles, &CHARBLOCK[1], BlankTreeBGTilesLen/2);
 
     // TODO 4.4 - load trees map to screenblock

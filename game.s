@@ -539,28 +539,25 @@ updateEnemy:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
-	mov	r4, r0
+	ldr	r2, [r0, #28]
 	ldr	r3, .L100
+	cmp	r2, #0
 	sub	sp, sp, #16
-	mov	lr, pc
-	bx	r3
-	ldr	r3, [r4, #28]
-	cmp	r3, #0
+	mov	r4, r0
+	ldr	r2, [r3]
 	beq	.L78
-	ldr	r3, [r4, #32]
-	add	r2, r4, #12
+	ldr	r3, [r0, #32]
+	add	r1, r0, #12
 	cmp	r3, #0
-	ldm	r2, {r2, ip}
-	ldr	r3, [r4, #4]
+	ldm	r1, {r1, ip}
+	ldr	r3, [r0, #4]
 	beq	.L79
 	add	r3, ip, r3
-	add	r3, r3, r2
+	add	r3, r3, r1
 	cmp	r3, #239
-	strgt	ip, [r4, #4]
+	strgt	ip, [r0, #4]
 .L80:
-	ldr	r3, .L100+4
-	ldr	r3, [r3]
-	cmp	r3, #0
+	cmp	r2, #0
 	bne	.L82
 	ldr	r3, [r4, #4]
 	cmp	r3, #120
@@ -571,7 +568,7 @@ updateEnemy:
 	beq	.L99
 .L85:
 	ldr	r2, [r4, #48]
-	ldr	r3, .L100+8
+	ldr	r3, .L100+4
 	smull	r0, r1, r2, r3
 	asr	r3, r2, #31
 	rsb	r3, r3, r1, asr #3
@@ -593,11 +590,9 @@ updateEnemy:
 	pop	{r4, r5, r6, lr}
 	bx	lr
 .L78:
-	ldr	r3, .L100+4
-	ldr	r3, [r3]
-	cmp	r3, #0
+	cmp	r2, #0
 	bne	.L85
-	ldr	r3, [r4, #4]
+	ldr	r3, [r0, #4]
 	cmp	r3, #120
 	bne	.L85
 .L90:
@@ -605,21 +600,21 @@ updateEnemy:
 	cmp	r3, #0
 	bne	.L85
 	mov	r1, #1
-	ldr	r2, .L100+12
+	ldr	r2, .L100+8
 	ldr	r3, [r2]
 	add	r3, r3, r1
 	str	r3, [r2]
 	str	r1, [r4, #40]
 	b	.L85
 .L79:
-	sub	r3, r3, r2
+	sub	r3, r3, r1
 	sub	r3, r3, ip
 	cmp	r3, #0
 	rsble	r3, ip, #240
 	strle	r3, [r4, #4]
 	b	.L80
 .L99:
-	ldr	r0, .L100+16
+	ldr	r0, .L100+12
 	ldr	r6, [r4, #20]
 	ldr	r3, [r0, #16]
 	ldr	r2, [r0, #20]
@@ -630,7 +625,7 @@ updateEnemy:
 	ldr	ip, [r4]
 	asr	r0, r0, #8
 	stm	sp, {ip, lr}
-	ldr	r6, .L100+20
+	ldr	r6, .L100+16
 	mov	lr, pc
 	bx	r6
 	cmp	r0, #0
@@ -647,7 +642,6 @@ updateEnemy:
 .L101:
 	.align	2
 .L100:
-	.word	rand
 	.word	cheater
 	.word	1717986919
 	.word	stuck
@@ -697,14 +691,15 @@ updateFlower:
 	str	r3, [r0, #28]
 	mov	lr, pc
 	bx	r5
-	ldr	r3, .L111+12
-	smull	r6, r7, r0, r3
+	ldr	r1, .L111+12
+	smull	r2, r3, r0, r1
+	add	r2, r0, r3
 	asr	r3, r0, #31
-	rsb	r3, r3, r7, asr #4
+	rsb	r3, r3, r2, asr #7
 	add	r3, r3, r3, lsl #2
-	rsb	r3, r3, r3, lsl #4
-	sub	r3, r0, r3, lsl #1
-	add	r3, r3, #10
+	rsb	r3, r3, r3, lsl #3
+	sub	r3, r0, r3, lsl #2
+	add	r3, r3, #20
 	str	r3, [r4]
 	mov	lr, pc
 	bx	r5
@@ -745,7 +740,7 @@ updateFlower:
 	.word	goog
 	.word	collision
 	.word	rand
-	.word	458129845
+	.word	-368140053
 	.word	1195121335
 	.word	11025
 	.word	10250

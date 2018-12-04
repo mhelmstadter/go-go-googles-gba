@@ -1439,7 +1439,7 @@ extern const unsigned short spritesheetPal[256];
 # 12 "main.c" 2
 # 1 "BlankTreeBG.h" 1
 # 22 "BlankTreeBG.h"
-extern const unsigned short BlankTreeBGTiles[8064];
+extern const unsigned short BlankTreeBGTiles[16128];
 
 
 extern const unsigned short BlankTreeBGMap[1024];
@@ -1457,7 +1457,7 @@ extern const unsigned char GameSong[2977920];
 # 15 "main.c" 2
 # 1 "PrimaryTree.h" 1
 # 22 "PrimaryTree.h"
-extern const unsigned short PrimaryTreeTiles[2400];
+extern const unsigned short PrimaryTreeTiles[4800];
 
 
 extern const unsigned short PrimaryTreeMap[1024];
@@ -1651,15 +1651,15 @@ void goToGame() {
 
 
 
-    (*(volatile unsigned short*)0x4000008) = (0<<14) | ((0)<<2) | ((31)<<8);
+    (*(volatile unsigned short*)0x4000008) = (1<<7) | (0<<14) | ((0)<<2) | ((31)<<8);
 
-    DMANow(3, PrimaryTreeTiles, &((charblock *)0x6000000)[0], 4800/2);
+    DMANow(3, PrimaryTreeTiles, &((charblock *)0x6000000)[0], 9600/2);
     DMANow(3, PrimaryTreeMap, &((screenblock *)0x6000000)[31], 2048/2);
 
 
 
-    (*(volatile unsigned short*)0x400000A) = (0<<14) | ((1)<<2) | ((29)<<8);
-    DMANow(3, BlankTreeBGTiles, &((charblock *)0x6000000)[1], 16128/2);
+    (*(volatile unsigned short*)0x400000A) = (1<<7) | (0<<14) | ((1)<<2) | ((29)<<8);
+    DMANow(3, BlankTreeBGTiles, &((charblock *)0x6000000)[1], 32256/2);
 
 
     DMANow(3, BlankTreeBGMap, &((screenblock *)0x6000000)[29], 2048/2);
