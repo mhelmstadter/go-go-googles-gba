@@ -1,5 +1,5 @@
 PRODUCT_NAME       = Project
-SOURCES            = myLib.c main.c game.c StartScreen.c MiscScreen.c Level2Splash.c Level3Splash.c PauseScreen.c WinScreen.c LoseScreen.c spritesheet.c BlankTreeBG.c sound.c JumpAround.c GameSong.c PrimaryTree.c Ding.c
+SOURCES            = myLib.c main.c game.c StartScreen.c MiscScreen.c Level2Splash.c Level3Splash.c PauseScreen.c WinScreen.c LoseScreen.c spritesheet.c BlankTreeBG.c sound.c JumpAround.c Lose.c Win.c Pause.c Unpause.c GameSong.c PrimaryTree.c Ding.c Splat.c
 CCPATH             = C:\cygwin64\bin
 DKPATH             = C:\devkitARM\bin
 VBASIM             = C:\vbam-2.0.1\bin\visualboyadvance-m.exe

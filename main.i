@@ -1307,6 +1307,7 @@ typedef struct {
     int hide;
     int isJumping;
     int timer;
+    int aniState;
 } GOOG;
 
 
@@ -1456,6 +1457,22 @@ extern const unsigned char JumpAround[2371392];
 # 20 "GameSong.h"
 extern const unsigned char GameSong[2977920];
 # 15 "main.c" 2
+# 1 "Lose.h" 1
+# 20 "Lose.h"
+extern const unsigned char Lose[49370];
+# 16 "main.c" 2
+# 1 "Win.h" 1
+# 20 "Win.h"
+extern const unsigned char Win[100959];
+# 17 "main.c" 2
+# 1 "Pause.h" 1
+# 20 "Pause.h"
+extern const unsigned char Pause[3137];
+# 18 "main.c" 2
+# 1 "Unpause.h" 1
+# 20 "Unpause.h"
+extern const unsigned char Unpause[2745];
+# 19 "main.c" 2
 # 1 "PrimaryTree.h" 1
 # 22 "PrimaryTree.h"
 extern const unsigned short PrimaryTreeTiles[4800];
@@ -1465,7 +1482,7 @@ extern const unsigned short PrimaryTreeMap[1024];
 
 
 extern const unsigned short PrimaryTreePal[256];
-# 16 "main.c" 2
+# 20 "main.c" 2
 # 1 "Level2Splash.h" 1
 # 22 "Level2Splash.h"
 extern const unsigned short Level2SplashTiles[2064];
@@ -1475,7 +1492,7 @@ extern const unsigned short Level2SplashMap[1024];
 
 
 extern const unsigned short Level2SplashPal[256];
-# 17 "main.c" 2
+# 21 "main.c" 2
 # 1 "Level3Splash.h" 1
 # 22 "Level3Splash.h"
 extern const unsigned short Level3SplashTiles[2064];
@@ -1485,7 +1502,7 @@ extern const unsigned short Level3SplashMap[1024];
 
 
 extern const unsigned short Level3SplashPal[256];
-# 18 "main.c" 2
+# 22 "main.c" 2
 
 
 void initialize();
@@ -1807,6 +1824,8 @@ void game() {
 
 void goToPause() {
 
+    playSoundB(Pause, 3137, 11025, 0);
+
     (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12);
 
 
@@ -1829,6 +1848,7 @@ void pause() {
 
 
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        playSoundB(Unpause, 2745, 11025, 0);
         unpauseSound();
         goToGame();
 
@@ -1848,7 +1868,7 @@ void goToWin() {
     (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12);
 
     stopSound();
-
+    playSoundB(Win, 100959, 11025, 0);
 
     DMANow(3, WinScreenPal, ((unsigned short *)0x5000000), 256);
 
@@ -1875,6 +1895,7 @@ void win() {
 void goToLose() {
 
     stopSound();
+    playSoundB(Lose, 49370, 11025, 0);
     (*(unsigned short *)0x4000000) = 0 | (1<<9) | (1<<12);
 
     DMANow(3, LoseScreenPal, ((unsigned short *)0x5000000), 256);

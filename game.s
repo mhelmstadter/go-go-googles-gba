@@ -657,16 +657,24 @@ updateEnemy:
 	bx	r6
 	cmp	r0, #0
 	beq	.L90
-	ldr	r3, [r5]
-	cmp	r3, #0
-	streq	r3, [r4, #28]
+	ldr	r5, [r5]
+	cmp	r5, #0
+	bne	.L91
+	mov	r3, r5
+	ldr	r2, .L106+20
+	ldr	r1, .L106+24
+	ldr	r0, .L106+28
+	ldr	r6, .L106+32
+	mov	lr, pc
+	bx	r6
+	str	r5, [r4, #28]
 	b	.L91
 .L90:
 	ldr	r3, [r4, #32]
 	ldr	r2, [r4, #12]
 	cmp	r3, #0
 	ldr	r3, [r4, #4]
-	addne	r3, r3, r2
+	addne	r3, r2, r3
 	subeq	r3, r3, r2
 	str	r3, [r4, #4]
 	b	.L91
@@ -678,6 +686,10 @@ updateEnemy:
 	.word	stuck
 	.word	goog
 	.word	collision
+	.word	11025
+	.word	9987
+	.word	Splat
+	.word	playSoundA
 	.size	updateEnemy, .-updateEnemy
 	.align	2
 	.global	updateFlower

@@ -12,6 +12,10 @@
 #include "BlankTreeBG.h"
 #include "JumpAround.h"
 #include "GameSong.h"
+#include "Lose.h"
+#include "Win.h"
+#include "Pause.h"
+#include "Unpause.h"
 #include "PrimaryTree.h"
 #include "Level2Splash.h"
 #include "Level3Splash.h"
@@ -336,6 +340,8 @@ void game() {
 // Sets up the pause state
 void goToPause() {
 
+    playSoundB(Pause, PAUSELEN, PAUSEFREQ, 0);
+
     REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
 
     // Load pause screen palette
@@ -358,6 +364,7 @@ void pause() {
 
     // State transitions
     if (BUTTON_PRESSED(BUTTON_START)) {
+        playSoundB(Unpause, UNPAUSELEN, UNPAUSEFREQ, 0);
         unpauseSound();
         goToGame();
         //state = GAME;
@@ -377,7 +384,7 @@ void goToWin() {
     REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
 
     stopSound();
-
+    playSoundB(Win, WINLEN, WINFREQ, 0);
     // Load win screen palette
     DMANow(3, WinScreenPal, PALETTE, 256);
 
@@ -404,6 +411,7 @@ void win() {
 void goToLose() {
 
     stopSound();
+    playSoundB(Lose, LOSELEN, LOSEFREQ, 0);
     REG_DISPCTL = MODE0 | BG1_ENABLE | SPRITE_ENABLE;
     // Load lose screen palette
     DMANow(3, LoseScreenPal, PALETTE, 256);

@@ -3,6 +3,7 @@
 #include "game.h"
 #include "sound.h"
 #include "Ding.h"
+#include "Splat.h"
 
 // Variables
 // Background
@@ -233,6 +234,7 @@ void updateEnemy(BUTTERFLY* b) {
 		// If it collides with the player...
 		if (collision(SHIFTDOWN(goog.row), goog.col, goog.height, goog.width, b->row, b->col, b->height, b->width)) {
 			if (!cheater) {
+				playSoundA(Splat, SPLATLEN, SPLATFREQ, 0);
 				b->active = 0;
 			}
 			

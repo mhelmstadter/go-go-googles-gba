@@ -993,6 +993,10 @@ void stopSound();
 # 20 "Ding.h"
 extern const unsigned char Ding[10250];
 # 6 "game.c" 2
+# 1 "Splat.h" 1
+# 20 "Splat.h"
+extern const unsigned char Splat[9987];
+# 7 "game.c" 2
 
 
 
@@ -1223,6 +1227,7 @@ void updateEnemy(BUTTERFLY* b) {
 
   if (collision(((goog.row) >> 8), goog.col, goog.height, goog.width, b->row, b->col, b->height, b->width)) {
    if (!cheater) {
+    playSoundA(Splat, 9987, 11025, 0);
     b->active = 0;
    }
 
